@@ -1,0 +1,29 @@
+{
+  "name": "kriptou.js",
+  "version": "0.0.9",
+  "description": "Another kriptou (crypto) SDK",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "clean:deep": "npm run clean:build && rimraf package-lock.json && rm -rf node_modules",
+    "clean:build": "npm i && rimraf lib",
+    "pre:build": "npm i && npm run clean:build",
+    "compile": "tsc -p ./",
+    "build": "npm run pre:build && npm run compile",
+    "test": "npm run test:lint && nyc mocha",
+    "lint": "tslint -p tsconfig.json \"src/**/*.ts\"",
+    "changelog": "auto-changelog --template changelog-template.hbs -p -u --commit-limit false -o CHANGELOG.md"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "2.5.1",
+    "rimraf": "3.0.2",
+    "rxjs": "7.5.5",
+    "typescript": "4.6.2"
+  },
+  "dependencies": {
+    "@ethersproject/experimental": "5.5.0",
+    "web3": "1.7.1"
+  }
+}
