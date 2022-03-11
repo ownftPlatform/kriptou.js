@@ -1,3 +1,8 @@
+/** ***********************
+ * MIT
+ * Copyright (c) 2022 Wen Moon Market
+ **************************/
+
 import { AccountService, KriptouUserInternal } from './account.service';
 import { StatusService } from './status.service';
 import { Web3Service } from './web3.service';
@@ -8,6 +13,9 @@ import { ethers } from 'ethers';
 import { KriptouNetworkInternal, NetworkService, KriptouNetworkTypeInternal } from './network.service';
 import { KriptouEventInternal } from './events';
 import { ConfigService, KriptouConfigInternal } from './config/config.service';
+import { LogTypes, logUtil } from './util/log-util';
+
+const logger = logUtil.getLogger('Kriptou');
 
 export namespace Kriptou {
     export namespace Types {
@@ -16,6 +24,7 @@ export namespace Kriptou {
         export type User = KriptouUserInternal;
         export type Network = KriptouNetworkInternal;
         export type Config = KriptouConfigInternal;
+        export type LogLevels = LogTypes;
     }
 
     // Exporting 'ethers' project's utils
@@ -27,8 +36,8 @@ export namespace Kriptou {
     /**
      * Initialises the environment.
      */
-    export function init(_config?: Kriptou.Types.Config): void {
-        console.log('Kriptou :: init :: start');
+    export const init = (_config?: Kriptou.Types.Config): void => {
+        logger.debug('init - init');
 
         if (plugins === undefined) plugins = new Plugins();
         if (status === undefined) status = new Status();
@@ -37,18 +46,18 @@ export namespace Kriptou {
         if (account === undefined) account = new Account(status, web3API);
         if (config === undefined) config = new Config(_config);
 
-        console.log('Kriptou :: init :: done');
-    }
+        logger.debug('init - done');
+    };
 
-    export function invokeContractMethod(options: Kriptou.Types.ContractMethodInvocationOptions): Promise<any> {
+    export const invokeContractMethod = (options: Kriptou.Types.ContractMethodInvocationOptions): Promise<any> => {
         return Contract.invokeContractMethod(options, User.current());
-    }
+    };
 
-    export function subscribe(
+    export const subscribe = (
         subscription: { listener: string; events: Array<KriptouEventInternal> },
         fn: (...args: any) => any
-    ): void {
-        console.log('Kriptou :: subscribe :: subscription', subscription);
+    ): void => {
+        logger.debug('subscribe - subscription:', subscription);
         subscription.events.forEach((event: KriptouEventInternal) => {
             if (event === KriptouEventInternal.StatusUpdated) {
                 status.addSubscription(subscription, fn);
@@ -60,33 +69,33 @@ export namespace Kriptou {
                 network.addNetworkUpdatedSubscription(subscription, fn);
             }
         });
-    }
+    };
 
     export class Web3API extends Web3Service {
-        static authenticate() {
+        public static authenticate() {
             web3API.connectWallet();
         }
     }
 
     export class Account extends AccountService {
-        static current() {
+        private static current() {
             return account;
         }
     }
 
     export class User implements Types.User {
-        static current(): Types.User {
-            console.log('User :: current', user);
+        public static current(): Types.User {
+            logger.debug('User :: current - user:', user);
             return user;
         }
-        static set(_user: any) {
-            console.log('User :: set');
+        public static set(_user: any) {
+            logger.debug('User :: set - user:', _user);
             user = _user;
         }
     }
 
     export class Status extends StatusService {
-        static current(): Status {
+        public static current(): Status {
             return status;
         }
     }
@@ -94,23 +103,23 @@ export namespace Kriptou {
     export class Plugins extends PluginsService {}
 
     export class Network extends NetworkService {
-        static currentNetwork(): Types.Network | undefined {
+        public static currentNetwork(): Types.Network | undefined {
             return network.network;
         }
 
         /**
          * Returns whether the current selected network is valid and also executes a lambda based on the library's configuration.
          */
-        static validateNetwork(): boolean {
+        public static validateNetwork(): boolean {
             return config.validateNetwork();
         }
     }
 
     export class Config extends ConfigService {
-        static current(): Config {
+        public static current(): Config {
             return config;
         }
-        static currentConfig(): Types.Config {
+        private currentConfig(): Types.Config {
             return config.config;
         }
     }

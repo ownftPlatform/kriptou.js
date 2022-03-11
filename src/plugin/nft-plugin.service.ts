@@ -1,16 +1,28 @@
+/** ***********************
+ * MIT
+ * Copyright (c) 2022 Wen Moon Market
+ **************************/
+
+import { logUtil } from '../util/log-util';
+
 export interface KriptouNftInternal {
     img: string;
 }
 
+const logger = logUtil.getLogger('NftPluginService');
+
 export class NftPluginService {
     constructor() {
-        console.log('NftPluginService :: ctor');
+        logger.debug('ctor');
     }
 
-    async getNFTs(param: { chain: string }) {
+    public async getNFTs(_param: { chain: string }) {
         return Promise.resolve([
+            // eslint-disable-next-line sonarjs/no-duplicate-string
             { img: 'assets/img/images/hotdog.jpg' }, // 4
+            // eslint-disable-next-line sonarjs/no-duplicate-string
             { img: 'assets/img/images/tree.jpg' }, // 0
+            // eslint-disable-next-line sonarjs/no-duplicate-string
             { img: 'assets/img/images/birds.jpg' }, // 3
             { img: 'assets/img/images/tree.jpg' }, // 1
             { img: 'assets/img/images/birds.jpg' }, // 3

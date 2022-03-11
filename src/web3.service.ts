@@ -1,12 +1,20 @@
+/** ***********************
+ * MIT
+ * Copyright (c) 2022 Wen Moon Market
+ **************************/
+
 import { ReplaySubject } from 'rxjs';
 import { ethers } from 'ethers';
 import { ContractService } from './contract/contract.service';
 import { NetworkService } from './network.service';
+import { logUtil } from './util/log-util';
 
-const Web3 = require('web3');
+const web3 = require('web3');
 
 declare let require: any;
 declare let window: any;
+
+const logger = logUtil.getLogger('Web3Service');
 
 export class Web3Service {
     private web3: any;
@@ -14,31 +22,29 @@ export class Web3Service {
     public rxWeb3: ReplaySubject<any> = new ReplaySubject();
 
     constructor(private readonly networkService: NetworkService) {
-        console.log('Web3Service :: ctor');
+        logger.debug('ctor');
         this.initWeb3();
     }
 
     private initWeb3(): void {
         if (window.ethereum === undefined) {
-            alert('Non-Ethereum browser detected. Install MetaMask');
+            window.alert('Non-Ethereum browser detected. Install MetaMask');
         } else {
             this.setupEvents(window.ethereum);
-            if (typeof window.web3 !== 'undefined') {
-                this.web3 = window.web3.currentProvider;
-            } else {
-                this.web3 = new Web3.providers.HttpProvider('http://localhost:8545');
-            }
-            window.web3 = new Web3(window.ethereum);
+            this.web3 =
+                typeof window.web3 !== 'undefined'
+                    ? window.web3.currentProvider
+                    : new web3.providers.HttpProvider('http://localhost:8545');
+            window.web3 = new web3(window.ethereum);
             window.provider = new ethers.providers.Web3Provider(window.ethereum);
-            console.log('this.web3:', this.web3);
-            console.log('window.web3:', window.web3);
+            logger.debug('this.web3:', this.web3);
+            logger.debug('window.web3:', window.web3);
 
-            // this.enable = this.enableMetaMaskAccount();
             window.web3.eth.getChainId().then((chainId: number) => {
-                console.log('Web3.Service :: initWeb3 :: chainId', chainId);
+                logger.info('initWeb3 - chainId:', chainId);
                 window.chainId = chainId;
                 this.networkService.setChainId(chainId);
-                ContractService.blockchain = window.web3.eth;
+                ContractService.BLOCKCHAIN = window.web3.eth;
                 this.rxWeb3.next([this.web3, window.web3, window.web3.eth]);
             });
         }
@@ -46,52 +52,50 @@ export class Web3Service {
 
     private async enableMetaMaskAccount(): Promise<any> {
         if (window.ethereum === undefined) {
-            alert('Non-Ethereum browser detected. Install MetaMask');
+            window.alert('Non-Ethereum browser detected. Install MetaMask');
             return;
         }
-        console.log('enableMetaMaskAccount - 1');
+        logger.debug('enableMetaMaskAccount - 1');
         let enable = false;
-        console.log('enableMetaMaskAccount - 2');
-        await new Promise((resolve, reject) => {
-            console.log('enableMetaMaskAccount - 3');
+        logger.debug('enableMetaMaskAccount - 2');
+        await new Promise((_resolve, _reject) => {
+            logger.debug('enableMetaMaskAccount - 3');
             enable = window.ethereum.enable();
-            console.log('enableMetaMaskAccount - 4', enable);
+            logger.debug('enableMetaMaskAccount - 4', enable);
         });
-        console.log('enableMetaMaskAccount - 5');
+        logger.debug('enableMetaMaskAccount - 5');
         return Promise.resolve(enable);
     }
 
     private setupEvents(ethereum: any): void {
-        ethereum.on('accountsChanged', (accounts: any) => {
+        ethereum.on('accountsChanged', (_accounts: any) => {
             // Handle the new accounts, or lack thereof.
             // "accounts" will always be an array, but it can be empty.
-            console.log('setupEvents - accountsChanged');
+            logger.debug('setupEvents - accountsChanged');
             window.location.reload();
         });
 
-        ethereum.on('chainChanged', (chainId: any) => {
+        ethereum.on('chainChanged', (_chainId: any) => {
             // Handle the new chain.
             // Correctly handling chain changes can be complicated.
             // We recommend reloading the page unless you have good reason not to.
             // window.location.reload();
-            console.log('setupEvents - chainChanged');
+            logger.debug('setupEvents - chainChanged');
             window.location.reload();
         });
 
-        ethereum.on('connect', (connectInfo: any) => {
+        ethereum.on('connect', (_connectInfo: any) => {
             // Handle the new chain.
             // Correctly handling chain changes can be complicated.
             // We recommend reloading the page unless you have good reason not to.
-            console.log('setupEvents - connect');
-            // window.location.reload();
+            logger.debug('setupEvents - connect');
         });
 
-        ethereum.on('disconnect', (connectInfo: any) => {
+        ethereum.on('disconnect', (_connectInfo: any) => {
             // Handle the new chain.
             // Correctly handling chain changes can be complicated.
             // We recommend reloading the page unless you have good reason not to.
-            console.log('setupEvents - disconnect');
-            // window.location.reload();
+            logger.debug('setupEvents - disconnect');
         });
     }
 

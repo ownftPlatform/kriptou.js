@@ -9,21 +9,44 @@
     "clean:build": "npm i && rimraf lib",
     "pre:build": "npm i && npm run clean:build",
     "compile": "tsc -p ./",
-    "build": "npm run pre:build && npm run compile",
+    "build": "npm run pre:build && npm run compile && npm run lint",
+    "lint": "eslint -c .eslintrc.js --ext .ts ./",
     "test": "npm run test:lint && nyc mocha",
-    "lint": "tslint -p tsconfig.json \"src/**/*.ts\"",
     "changelog": "auto-changelog --template changelog-template.hbs -p -u --commit-limit false -o CHANGELOG.md"
   },
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "@ethersproject/address": "^5.6.0",
+    "@ethersproject/bignumber": "^5.6.0",
+    "@ethersproject/constants": "^5.6.0",
+    "@ethersproject/contracts": "^5.6.0",
+    "@ethersproject/experimental": "5.5.0",
+    "@ethersproject/providers": "^5.6.0",
+    "ethers": "5.6.0",
+    "rxjs": "7.5.5",
+    "web3": "1.7.1",
+    "web3-utils": "1.7.1"
+  },
   "devDependencies": {
+    "@types/node": "16.11.26",
+    "@typescript-eslint/eslint-plugin": "5.13.0",
+    "@typescript-eslint/parser": "5.13.0",
+    "eslint": "8.10.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-config-standard": "17.0.0-1",
+    "eslint-plugin-etc": "^2.0.2",
+    "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-import": "2.25.4",
+    "eslint-plugin-jsdoc": "37.4.0",
+    "eslint-plugin-no-null": "1.0.2",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-promise": "6.0.0",
+    "eslint-plugin-sonarjs": "^0.12.0",
+    "eslint-plugin-unicorn": "39.0.0",
     "prettier": "2.5.1",
     "rimraf": "3.0.2",
-    "rxjs": "7.5.5",
     "typescript": "4.6.2"
-  },
-  "dependencies": {
-    "@ethersproject/experimental": "5.5.0",
-    "web3": "1.7.1"
   }
 }

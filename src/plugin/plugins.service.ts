@@ -1,9 +1,17 @@
+/** ***********************
+ * MIT
+ * Copyright (c) 2022 Wen Moon Market
+ **************************/
+
 import { NftPluginService } from './nft-plugin.service';
+import { logUtil } from '../util/log-util';
+
+const logger = logUtil.getLogger('PluginsService');
 
 export class PluginsService {
     constructor() {
-        console.log('PluginsService :: ctor');
+        logger.debug('ctor');
     }
 
-    static nft: NftPluginService = new NftPluginService();
+    public static NFT: NftPluginService = new NftPluginService();
 }

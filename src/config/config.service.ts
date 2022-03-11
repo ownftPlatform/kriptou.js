@@ -1,6 +1,15 @@
+/** ***********************
+ * MIT
+ * Copyright (c) 2022 Wen Moon Market
+ **************************/
+
 import { Kriptou } from '../index';
+import { logUtil } from '../util/log-util';
 
 export interface KriptouConfigInternal {
+    logger?: {
+        level: Kriptou.Types.LogLevels;
+    };
     chain: {
         performValidation: boolean;
         delayValidation: boolean;
@@ -9,9 +18,13 @@ export interface KriptouConfigInternal {
     };
 }
 
+const logger = logUtil.getLogger('ConfigService');
+
 export class ConfigService {
     constructor(public readonly config?: Kriptou.Types.Config) {
-        console.log('ConfigService :: ctor');
+        if (this.config !== undefined && this.config.logger !== undefined) {
+            logUtil.updateLevel(this.config.logger.level);
+        }
     }
 
     public validateNetwork(): boolean {
@@ -23,24 +36,18 @@ export class ConfigService {
     }
 
     private isCurrentChainValid(): boolean {
-        console.log('ConfigService :: isCurrentChainValid - 1');
         if (this.config === undefined) {
-            console.log('ConfigService :: isCurrentChainValid - 2');
             return true;
         }
 
-        console.log('ConfigService :: isCurrentChainValid - 3');
         if (!this.config.chain.performValidation) {
-            console.log('ConfigService :: isCurrentChainValid - 4');
             return true;
         }
 
-        console.log('ConfigService :: isCurrentChainValid - 5');
         if (Kriptou.Network.currentNetwork() === undefined) {
-            console.log('ConfigService :: isCurrentChainValid - Kriptou.Network.currentNetwork() === undefined');
+            logger.warn('isCurrentChainValid - Kriptou.Network.currentNetwork() === undefined');
             return false;
         }
-        console.log('ConfigService :: isCurrentChainValid - 6');
 
         return !!this.config.chain.supportedChains.find((value) => value === Kriptou.Network.currentNetwork().chainId);
     }

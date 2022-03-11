@@ -1,6 +1,12 @@
+/** ***********************
+ * MIT
+ * Copyright (c) 2022 Wen Moon Market
+ **************************/
+
 import { Subject } from 'rxjs';
 import { Kriptou } from './index';
 import { KriptouEventInternal } from './events';
+import { logUtil } from './util/log-util';
 
 export enum StatusValue {
     NotReady,
@@ -8,41 +14,37 @@ export enum StatusValue {
     ReadyAndUserNotConnected
 }
 
+const logger = logUtil.getLogger('StatusService');
+
 export class StatusService {
     private readonly rxStatusUpdated: Subject<StatusValue> = new Subject();
     private readonly rxUserLoggedIn: Subject<Kriptou.Types.User> = new Subject();
 
     private statusValue: StatusValue = StatusValue.NotReady;
+    // eslint-disable-next-line etc/no-commented-out-code
     // private subscriptions?: Map<string, (...args: any) => any> = new Map();
     // private userLoggedInSubscriptions?: Map<string, (...args: any) => any> = new Map();
 
     constructor() {
-        console.log('StatusService :: ctor');
+        logger.debug('ctor');
     }
 
-    // static current(): Status {
-    //     return status;
-    // }
-    // public isReady(): boolean {
-    //     return Status.statusValue === StatusValue.Ready;
-    // }
-
     public isReadyAndUserConnected(): boolean {
-        console.log('StatusService :: isReadyAndUserConnected', this.statusValue === StatusValue.ReadyAndUserConnected);
+        logger.debug('isReadyAndUserConnected:', this.statusValue === StatusValue.ReadyAndUserConnected);
         return this.statusValue === StatusValue.ReadyAndUserConnected;
     }
 
     public isReadyAndUserNotConnected(): boolean {
-        console.log('StatusService :: isReadyAndUserNotConnected', this.statusValue === StatusValue.ReadyAndUserNotConnected);
+        logger.debug('isReadyAndUserNotConnected:', this.statusValue === StatusValue.ReadyAndUserNotConnected);
         return this.statusValue === StatusValue.ReadyAndUserNotConnected;
     }
 
     public updateStatus(status: StatusValue, user: any): void {
-        console.log('StatusService :: updateStatus', status);
+        logger.debug('updateStatus:', status);
         this.statusValue = status;
         if (this.isReadyAndUserConnected()) {
             // this.userLoggedInSubscriptions?.forEach((value) => value({}));
-            console.log('StatusService :: updateStatus :: his.rxUserLoggedIn.next({});');
+            logger.debug('updateStatus - this.rxUserLoggedIn.next({});');
             this.rxUserLoggedIn.next(user);
             Kriptou.User.set(user);
         }
@@ -51,7 +53,6 @@ export class StatusService {
     }
 
     public addSubscription(subscription: { listener: string; events: Array<KriptouEventInternal> }, fn: (...args: any) => any) {
-        // this.subscriptions?.set(subscription.listener, fn);
         this.rxStatusUpdated.subscribe(fn);
     }
     public addUserLoggedInSubscription(
@@ -59,6 +60,5 @@ export class StatusService {
         fn: (...args: any) => any
     ) {
         this.rxUserLoggedIn.subscribe(fn);
-        // this.userLoggedInSubscriptions?.set(subscription.listener, fn);
     }
 }

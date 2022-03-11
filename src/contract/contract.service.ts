@@ -1,9 +1,15 @@
+/** ***********************
+ * MIT
+ * Copyright (c) 2022 Wen Moon Market
+ **************************/
+
 import { getAddress } from '@ethersproject/address';
 import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { Contract } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
 import { Kriptou } from '../index';
 import { BigNumberish } from '@ethersproject/bignumber';
+import { logUtil } from '../util/log-util';
 
 type ContractMethodInvocationParams = Record<string, any>;
 
@@ -15,15 +21,21 @@ export interface KriptouContractMethodInvocationOptionsInternal {
     msgValue?: BigNumberish;
 }
 
+const logger = logUtil.getLogger('ContractService');
+
 export class ContractService {
     constructor() {
-        console.log('ContractService :: ctor');
+        logger.debug('ctor');
     }
 
-    static blockchain: any;
+    public static BLOCKCHAIN: any;
 
-    static invokeContractMethod(options: Kriptou.Types.ContractMethodInvocationOptions, user: Kriptou.Types.User): Promise<any> {
-        console.log('ContractService :: invokeContractMethod', options);
+    // eslint-disable-next-line max-lines-per-function
+    public static invokeContractMethod(
+        options: Kriptou.Types.ContractMethodInvocationOptions,
+        user: Kriptou.Types.User
+    ): Promise<any> {
+        logger.info('invokeContractMethod', options);
 
         if (!Kriptou.Config.current().validateNetwork()) {
             return;
@@ -55,7 +67,7 @@ export class ContractService {
         const isReadFunction: boolean = stateMutability === 'view' || stateMutability === 'pure';
         const transactionMethod: string = isReadFunction ? 'call' : 'send';
 
-        let contract: any = new ContractService.blockchain.Contract(options.abi, options.contractAddress, {
+        const contract: any = new ContractService.BLOCKCHAIN.Contract(options.abi, options.contractAddress, {
             from: user.address
         });
 
@@ -65,28 +77,14 @@ export class ContractService {
         const result: any = contract?.methods[options.functionName](...params)[transactionMethod](
             options.msgValue !== undefined ? { value: options.msgValue } : {}
         );
-        console.log('ContractService :: invokeContractMethod - result:', result);
+        logger.info('invokeContractMethod - result:', result);
 
         // Returns the underlying Promise as is
         return result;
-
-        // contract?.methods[options.functionName](...Object.entries(options.params).map((a: [string, any]) => a[1]))[
-        //     transactionMethod
-        //     ](options.msgValue !== undefined ? { value: options.msgValue } : {}, (error: any, result: any) => {
-        //     console.log(`ContractService :: invokeContractMethod :: ${options.functionName}`, error, result);
-        //     if (error !== undefined && error !== null) {
-        //         // this.rxEvents.next({ eventType: CommonEvent.Error, data: error });
-        //         return;
-        //     }
-        //     // TODO: Implement new event
-        //     // this.rxEvents.next({ eventType: SomeEvent.SomeType, data: result });
-        // });
-        //
-        // return Promise.resolve({});
     }
 
     // returns the checksummed address if the address is valid, otherwise returns false
-    static isAddress(value: any): string | false {
+    private static isAddress(value: any): string | false {
         try {
             return getAddress(value);
         } catch {
@@ -95,21 +93,21 @@ export class ContractService {
     }
 
     // account is not optional
-    static getSigner(library: Web3Provider, account: string): JsonRpcSigner {
+    private static getSigner(library: Web3Provider, account: string): JsonRpcSigner {
         return library.getSigner(account).connectUnchecked();
     }
 
     // account is optional
-    static getProviderOrSigner(library: Web3Provider, account?: string): Web3Provider | JsonRpcSigner {
+    private static getProviderOrSigner(library: Web3Provider, account?: string): Web3Provider | JsonRpcSigner {
         return account ? ContractService.getSigner(library, account) : library;
     }
 
     // account is optional
-    static getContract(address: string, ABI: any, library: Web3Provider, account?: string): Contract {
+    public static getContract(address: string, abi: any, library: Web3Provider, account?: string): Contract {
         if (!ContractService.isAddress(address) || address === AddressZero) {
             throw Error(`Invalid 'address' parameter '${address}'.`);
         }
 
-        return new Contract(address, ABI, ContractService.getProviderOrSigner(library, account) as any);
+        return new Contract(address, abi, ContractService.getProviderOrSigner(library, account) as any);
     }
 }

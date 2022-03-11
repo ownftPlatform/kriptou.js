@@ -1,24 +1,30 @@
+/** ***********************
+ * MIT
+ * Copyright (c) 2022 Wen Moon Market
+ **************************/
+
 import { Kriptou } from './index';
 import { Subject } from 'rxjs';
 import { KriptouEventInternal } from './events';
+import { logUtil } from './util/log-util';
 
 export enum KriptouNetworkTypeInternal {
-    MAIN = 1,
-    ROPSTEN = 3,
-    RINKEBY = 4,
-    ARBITRUM_ONE = 42161,
-    RINKARBY = 421611,
-    PULSECHAIN_TEST = 940
+    Main = 1,
+    Ropsten = 3,
+    Rinkeby = 4,
+    ArbitrumOne = 42161,
+    Rinkarby = 421611,
+    PulsechainTest = 940
 }
 
 const networks: Record<KriptouNetworkTypeInternal, Kriptou.Types.Network> = {
-    [KriptouNetworkTypeInternal.MAIN]: { chainId: KriptouNetworkTypeInternal.MAIN, name: 'Main' },
-    [KriptouNetworkTypeInternal.ROPSTEN]: { chainId: KriptouNetworkTypeInternal.ROPSTEN, name: 'Ropsten Testnet' },
-    [KriptouNetworkTypeInternal.RINKEBY]: { chainId: KriptouNetworkTypeInternal.RINKEBY, name: 'Rinkeby Testnet' },
-    [KriptouNetworkTypeInternal.ARBITRUM_ONE]: { chainId: KriptouNetworkTypeInternal.ARBITRUM_ONE, name: 'Arbitrum One' },
-    [KriptouNetworkTypeInternal.RINKARBY]: { chainId: KriptouNetworkTypeInternal.RINKARBY, name: 'Arbitrum Testnet' },
-    [KriptouNetworkTypeInternal.PULSECHAIN_TEST]: {
-        chainId: KriptouNetworkTypeInternal.PULSECHAIN_TEST,
+    [KriptouNetworkTypeInternal.Main]: { chainId: KriptouNetworkTypeInternal.Main, name: 'Main' },
+    [KriptouNetworkTypeInternal.Ropsten]: { chainId: KriptouNetworkTypeInternal.Ropsten, name: 'Ropsten Testnet' },
+    [KriptouNetworkTypeInternal.Rinkeby]: { chainId: KriptouNetworkTypeInternal.Rinkeby, name: 'Rinkeby Testnet' },
+    [KriptouNetworkTypeInternal.ArbitrumOne]: { chainId: KriptouNetworkTypeInternal.ArbitrumOne, name: 'Arbitrum One' },
+    [KriptouNetworkTypeInternal.Rinkarby]: { chainId: KriptouNetworkTypeInternal.Rinkarby, name: 'Arbitrum Testnet' },
+    [KriptouNetworkTypeInternal.PulsechainTest]: {
+        chainId: KriptouNetworkTypeInternal.PulsechainTest,
         name: 'PulseChain Testnet'
     }
 };
@@ -28,17 +34,19 @@ export interface KriptouNetworkInternal {
     chainId: number;
 }
 
+const logger = logUtil.getLogger('NetworkService');
+
 export class NetworkService {
     private readonly rxNetworkUpdated: Subject<Kriptou.Types.Network | undefined> = new Subject();
 
     constructor(public network?: Kriptou.Types.Network) {
-        console.log('NetworkService :: ctor');
+        logger.debug('ctor');
     }
 
     public setChainId(chainId: number): void {
         this.network = networks[chainId];
         if (this.network === undefined) {
-            console.warn('ChainId not supported: ' + chainId);
+            logger.warn('ChainId not supported: ' + chainId);
         }
 
         this.rxNetworkUpdated.next(this.network);
