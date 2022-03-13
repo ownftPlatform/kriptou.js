@@ -15,7 +15,6 @@ A library that gives you access to the underlying blockchain
 Kriptou.init();
 ```
 
-
 #### With configuration
 
 ```typescript
