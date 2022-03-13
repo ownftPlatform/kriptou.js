@@ -5,7 +5,6 @@ module.exports = {
         es6: true,
         node: true
     },
-    // ignorePatterns: ['.eslintrc.js', 'routes.ts'],
     extends: ['prettier'],
     parser: '@typescript-eslint/parser',
     parserOptions: {
