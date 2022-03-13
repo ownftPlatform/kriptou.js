@@ -5,9 +5,9 @@
 
 import { ReplaySubject } from 'rxjs';
 import { ethers } from 'ethers';
-import { ContractService } from './contract/contract.service';
-import { NetworkService } from './network.service';
-import { logUtil } from './util/log-util';
+import { ContractService } from '../contract/contract.service';
+import { NetworkService } from '../network/network.service';
+import { logUtil } from '../util/log-util';
 
 const web3 = require('web3');
 

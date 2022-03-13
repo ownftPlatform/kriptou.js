@@ -1,6 +1,6 @@
 {
   "name": "kriptou.js",
-  "version": "0.0.9",
+  "version": "0.0.26",
   "description": "Another kriptou (crypto) SDK",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -12,6 +12,9 @@
     "build": "npm run pre:build && npm run compile && npm run lint",
     "lint": "eslint -c .eslintrc.js --ext .ts ./",
     "test": "npm run test:lint && nyc mocha",
+    "publishh:whoami": "npm whoami",
+    "publishh:dryrun": "npm publish --dry-run",
+    "publishh": "npm publish --access=public",
     "changelog": "auto-changelog --template changelog-template.hbs -p -u --commit-limit false -o CHANGELOG.md"
   },
   "author": "",

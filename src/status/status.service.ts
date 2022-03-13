@@ -3,21 +3,25 @@
  * Copyright (c) 2022 Wen Moon Market
  **************************/
 
-import { Subject } from 'rxjs';
-import { Kriptou } from './index';
-import { KriptouEventInternal } from './events';
-import { logUtil } from './util/log-util';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { Kriptou } from '../index';
+import { KriptouEventInternal } from '../events';
+import { logUtil } from '../util/log-util';
 
 export enum StatusValue {
     NotReady,
     ReadyAndUserConnected,
-    ReadyAndUserNotConnected
+    ReadyAndUserNotConnected,
+    NoAccountsFound
 }
 
 const logger = logUtil.getLogger('StatusService');
 
 export class StatusService {
-    private readonly rxStatusUpdated: Subject<StatusValue> = new Subject();
+    private readonly rxStatusUpdated: Subject<{ status: StatusValue; user: Kriptou.Types.User }> = new BehaviorSubject({
+        status: StatusValue.NotReady,
+        user: undefined
+    });
     private readonly rxUserLoggedIn: Subject<Kriptou.Types.User> = new Subject();
 
     private statusValue: StatusValue = StatusValue.NotReady;
@@ -39,7 +43,7 @@ export class StatusService {
         return this.statusValue === StatusValue.ReadyAndUserNotConnected;
     }
 
-    public updateStatus(status: StatusValue, user: any): void {
+    public updateStatus(status: StatusValue, user?: any): void {
         logger.debug('updateStatus:', status);
         this.statusValue = status;
         if (this.isReadyAndUserConnected()) {
@@ -49,10 +53,13 @@ export class StatusService {
             Kriptou.User.set(user);
         }
         // this.subscriptions?.forEach((value) => value());
-        this.rxStatusUpdated.next(this.statusValue);
+        this.rxStatusUpdated.next({ status: this.statusValue, user });
     }
 
-    public addSubscription(subscription: { listener: string; events: Array<KriptouEventInternal> }, fn: (...args: any) => any) {
+    public addStatusUpdatedSubscription(
+        subscription: { listener: string; events: Array<KriptouEventInternal> },
+        fn: (...args: any) => any
+    ) {
         this.rxStatusUpdated.subscribe(fn);
     }
     public addUserLoggedInSubscription(

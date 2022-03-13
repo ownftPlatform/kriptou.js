@@ -26,7 +26,7 @@ class Logger {
     public debug(...args) {
         if (this.level.value <= levels.DEBUG.value) {
             // eslint-disable-next-line no-console
-            console.debug(`[DEBUG] ${this.category}:`, ...args);
+            console.log(`[DEBUG] ${this.category}:`, ...args);
         }
     }
 

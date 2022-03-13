@@ -10,11 +10,12 @@ export interface KriptouConfigInternal {
     logger?: {
         level: Kriptou.Types.LogLevels;
     };
-    chain: {
-        performValidation: boolean;
-        delayValidation: boolean;
-        supportedChains: Array<number>;
-        chainCheckFailedHandler: () => void;
+    chain?: {
+        performValidation?: boolean;
+        delayValidation?: boolean;
+        supportedChains?: Array<number>;
+        walletNotConnectedHandler?: () => void;
+        chainCheckFailedHandler?: () => void;
     };
 }
 
@@ -27,12 +28,23 @@ export class ConfigService {
         }
     }
 
-    public validateNetwork(): boolean {
+    public async validateNetwork(): Promise<boolean> {
+        const isWalletNotConnected: boolean = await ConfigService.isWalletNotConnected();
+        if (isWalletNotConnected) {
+            this.config.chain.walletNotConnectedHandler();
+            return false;
+        }
+
         if (!this.isCurrentChainValid()) {
             this.config.chain.chainCheckFailedHandler();
             return false;
         }
         return true;
+    }
+
+    private static isWalletNotConnected(): Promise<boolean> {
+        // Disable it here and rather fire it in `validateNetwork` function
+        return Kriptou.User.currentPromise(false).then((value) => value === undefined);
     }
 
     private isCurrentChainValid(): boolean {

@@ -3,14 +3,14 @@
  * Copyright (c) 2022 Wen Moon Market
  **************************/
 
-import { AccountService, KriptouUserInternal } from './account.service';
-import { StatusService } from './status.service';
-import { Web3Service } from './web3.service';
+import { AccountService, KriptouUserInternal } from './account/account.service';
+import { StatusService } from './status/status.service';
+import { Web3Service } from './web3/web3.service';
 import { PluginsService } from './plugin/plugins.service';
 import { KriptouNftInternal } from './plugin/nft-plugin.service';
 import { ContractService, KriptouContractMethodInvocationOptionsInternal } from './contract/contract.service';
 import { ethers } from 'ethers';
-import { KriptouNetworkInternal, NetworkService, KriptouNetworkTypeInternal } from './network.service';
+import { KriptouNetworkInternal, NetworkService, KriptouNetworkTypeInternal } from './network/network.service';
 import { KriptouEventInternal } from './events';
 import { ConfigService, KriptouConfigInternal } from './config/config.service';
 import { LogTypes, logUtil } from './util/log-util';
@@ -43,8 +43,8 @@ export namespace Kriptou {
         if (status === undefined) status = new Status();
         if (network === undefined) network = new Network();
         if (web3API === undefined) web3API = new Web3API(network);
-        if (account === undefined) account = new Account(status, web3API);
         if (config === undefined) config = new Config(_config);
+        if (account === undefined) account = new Account(status, web3API, _config);
 
         logger.debug('init - done');
     };
@@ -60,7 +60,7 @@ export namespace Kriptou {
         logger.debug('subscribe - subscription:', subscription);
         subscription.events.forEach((event: KriptouEventInternal) => {
             if (event === KriptouEventInternal.StatusUpdated) {
-                status.addSubscription(subscription, fn);
+                status.addStatusUpdatedSubscription(subscription, fn);
             }
             if (event === KriptouEventInternal.UserLoggedIn) {
                 status.addUserLoggedInSubscription(subscription, fn);
@@ -88,6 +88,10 @@ export namespace Kriptou {
             logger.debug('User :: current - user:', user);
             return user;
         }
+        public static currentPromise(performWalletNotConnectedHandler: boolean = true): Promise<Types.User> {
+            logger.debug('User :: currentPromise - user:', user);
+            return account.getUser(performWalletNotConnectedHandler);
+        }
         public static set(_user: any) {
             logger.debug('User :: set - user:', _user);
             user = _user;
@@ -110,8 +114,12 @@ export namespace Kriptou {
         /**
          * Returns whether the current selected network is valid and also executes a lambda based on the library's configuration.
          */
-        public static validateNetwork(): boolean {
+        public static validateNetwork(): Promise<boolean> {
             return config.validateNetwork();
+        }
+
+        public static switchNetwork(): void {
+            network.switch().then(() => logger.debug('switchNetwork - done'));
         }
     }
 

@@ -11,3 +11,5 @@ changelog*
 *yaml
 *yml
 *.sh
+.eslintignore
+.eslintrc.js

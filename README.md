@@ -9,38 +9,54 @@ A library that gives you access to the underlying blockchain
 
 ### Initialise
 
+#### Without configuration
+
 ```typescript
 Kriptou.init();
 ```
 
-### Events
 
-#### React to 'UserLoggedIn' event (async):
+#### With configuration
 
 ```typescript
-Kriptou.subscribe(
+Kriptou.init(
     {
-        listener: 'ListenerName ',
-        events: [Kriptou.events.UserLoggedIn]
-    },
-    (user: Kriptou.Types.User) => {
-        // do something with 'user'
+        logger: {
+            level: 'info'
+        },
+        chain: {
+            performValidation: boolean,
+            delayValidation: boolean,
+            supportedChains: [Kriptou.supportedNetworks.Rinkarby],
+            walletNotConnectedHandler: () => {
+                // When the wallet is not connected 
+            },
+            chainCheckFailedHandler: () => {
+                // When the current Chain Id selected in the wallet needs to be changed
+            }
+        }
     }
 );
 ```
 
-#### React to 'NetworkUpdated' event (async):
+### Next steps
 
-```typescript
-        Kriptou.subscribe(
-    {
-        listener: 'ListenerName',
-        events: [Kriptou.events.NetworkUpdated]
-    },
-    (network: Kriptou.Types.Network | undefined) => {
-        // do something with 'network', if undefined then selected network not supported
-    }
-);
+#### Connect wallet
+
+```
+[TBC]
+```
+
+#### Retrieve user
+
+```
+[TBC]
+```
+
+#### Switch network
+
+```
+[TBC]
 ```
 
 ## Browser applications
