@@ -55,15 +55,10 @@ export class Web3Service {
             window.alert('Non-Ethereum browser detected. Install MetaMask');
             return;
         }
-        logger.debug('enableMetaMaskAccount - 1');
         let enable = false;
-        logger.debug('enableMetaMaskAccount - 2');
         await new Promise((_resolve, _reject) => {
-            logger.debug('enableMetaMaskAccount - 3');
             enable = window.ethereum.enable();
-            logger.debug('enableMetaMaskAccount - 4', enable);
         });
-        logger.debug('enableMetaMaskAccount - 5');
         return Promise.resolve(enable);
     }
 
