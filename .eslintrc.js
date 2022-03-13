@@ -8,9 +8,6 @@ module.exports = {
     // ignorePatterns: ['.eslintrc.js', 'routes.ts'],
     extends: ['prettier'],
     parser: '@typescript-eslint/parser',
-    // parserOptions: {
-    //     ecmaVersion: 12
-    // },
     parserOptions: {
         project: './tsconfig.json',
         sourceType: 'module'
