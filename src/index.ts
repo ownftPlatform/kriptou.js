@@ -42,8 +42,8 @@ export namespace Kriptou {
         if (plugins === undefined) plugins = new Plugins();
         if (status === undefined) status = new Status();
         if (network === undefined) network = new Network();
-        if (web3API === undefined) web3API = new Web3API(network);
         if (config === undefined) config = new Config(_config);
+        if (web3API === undefined) web3API = new Web3API(network, config);
         if (account === undefined) account = new Account(status, web3API, _config);
 
         logger.debug('init - done');
@@ -127,8 +127,11 @@ export namespace Kriptou {
         public static current(): Config {
             return config;
         }
-        private currentConfig(): Types.Config {
-            return config.config;
+        public static enableNetworkChangeReload(): void {
+            config.enableNetworkChangeReload();
+        }
+        public static disableNetworkChangeReload(): void {
+            config.disableNetworkChangeReload();
         }
     }
 
