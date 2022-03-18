@@ -46,7 +46,7 @@ export namespace Kriptou {
         if (config === undefined) config = new Config(_config);
         if (web3API === undefined) web3API = new Web3API(network, config);
         if (account === undefined) account = new Account(status, web3API, _config);
-        if (event === undefined) event = new Events(status, network);
+        if (_events === undefined) _events = new Events(status, network);
 
         logger.debug('init - done');
     };
@@ -60,7 +60,7 @@ export namespace Kriptou {
             subscription: { listener: string; event: KriptouEventInternal },
             fn: (...args: any) => any
         ): Types.Subscription {
-            return event.subscribe(subscription, fn);
+            return _events.subscribe(subscription, fn);
         }
     }
 
@@ -135,7 +135,7 @@ export namespace Kriptou {
     let account: Account;
     let plugins: Plugins;
     let config: Config;
-    let event: Events;
+    let _events: Events;
 
     export class Contract extends ContractService {}
 }
