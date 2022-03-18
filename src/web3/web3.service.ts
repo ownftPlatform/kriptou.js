@@ -8,7 +8,7 @@ import { ethers } from 'ethers';
 import { ContractService } from '../contract/contract.service';
 import { NetworkService } from '../network/network.service';
 import { logUtil } from '../util/log-util';
-import { Kriptou } from '../index';
+import { ConfigService } from '../config/config.service';
 
 const web3 = require('web3');
 
@@ -22,7 +22,7 @@ export class Web3Service {
     private enable: any;
     public rxWeb3: ReplaySubject<any> = new ReplaySubject();
 
-    constructor(private readonly networkService: NetworkService, private configService?: Kriptou.Config) {
+    constructor(private readonly networkService: NetworkService, private configService?: ConfigService) {
         logger.debug('ctor');
         this.initWeb3();
     }

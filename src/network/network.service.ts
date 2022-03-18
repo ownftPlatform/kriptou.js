@@ -5,8 +5,8 @@
 
 import { Kriptou } from '../index';
 import { Subject } from 'rxjs';
-import { KriptouEventInternal } from '../events';
 import { logUtil } from '../util/log-util';
+import { KriptouEventInternal } from '../event/event.service';
 
 declare let window: any;
 
@@ -62,10 +62,10 @@ export class NetworkService {
     }
 
     public addNetworkUpdatedSubscription(
-        subscription: { listener: string; events: Array<KriptouEventInternal> },
+        subscription: { listener: string; event: KriptouEventInternal },
         fn: (...args: any) => any
-    ) {
-        this.rxNetworkUpdated.subscribe(fn);
+    ): Kriptou.Types.Subscription {
+        return this.rxNetworkUpdated.subscribe(fn);
     }
 
     public async switch(): Promise<void> {
