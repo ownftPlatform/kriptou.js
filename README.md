@@ -33,10 +33,45 @@ Kriptou.init(
             chainCheckFailedHandler: () => {
                 // When the current Chain Id selected in the wallet needs to be changed
             }
-        }
+        },
+        networkChangeReloadEnabled: boolean
     }
 );
 ```
+
+### Events
+
+#### React to 'UserLoggedIn' event (async):
+
+```typescript
+Kriptou.subscribe(
+    {
+        listener: 'ListenerName ',
+        event: Kriptou.events.UserLoggedIn
+    },
+    (user: Kriptou.Types.User) => {
+        // do something with 'user'
+    }
+);
+```
+
+This `subscribe` method returns a `Kriptou.Types.Subscription` which can be used to unsubscribe again.
+
+#### React to 'NetworkUpdated' event (async):
+
+```typescript
+Kriptou.subscribe(
+    {
+        listener: 'ListenerName',
+        event: Kriptou.events.NetworkUpdated
+    },
+    (network: Kriptou.Types.Network | undefined) => {
+        // do something with 'network', if undefined then selected network not supported
+    }
+);
+```
+
+This `subscribe` method returns a `Kriptou.Types.Subscription` which can be used to unsubscribe again.
 
 ### Next steps
 
