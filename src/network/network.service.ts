@@ -5,8 +5,8 @@
 
 import { Kriptou } from '../index';
 import { Subject } from 'rxjs';
-import { KriptouEventInternal } from '../events';
 import { logUtil } from '../util/log-util';
+import { KriptouEventInternal } from '../event/event.service';
 
 declare let window: any;
 
@@ -15,7 +15,7 @@ export enum KriptouNetworkTypeInternal {
     Ropsten = 3,
     Rinkeby = 4,
     ArbitrumOne = 42161,
-    Rinkarby = 421611,
+    ArbitrumRinkeby = 421611,
     PulsechainTest = 940
 }
 
@@ -24,7 +24,10 @@ const networks: Record<KriptouNetworkTypeInternal, Kriptou.Types.Network> = {
     [KriptouNetworkTypeInternal.Ropsten]: { chainId: KriptouNetworkTypeInternal.Ropsten, name: 'Ropsten Testnet' },
     [KriptouNetworkTypeInternal.Rinkeby]: { chainId: KriptouNetworkTypeInternal.Rinkeby, name: 'Rinkeby Testnet' },
     [KriptouNetworkTypeInternal.ArbitrumOne]: { chainId: KriptouNetworkTypeInternal.ArbitrumOne, name: 'Arbitrum One' },
-    [KriptouNetworkTypeInternal.Rinkarby]: { chainId: KriptouNetworkTypeInternal.Rinkarby, name: 'Arbitrum Testnet' },
+    [KriptouNetworkTypeInternal.ArbitrumRinkeby]: {
+        chainId: KriptouNetworkTypeInternal.ArbitrumRinkeby,
+        name: 'Arbitrum Rinkeby'
+    },
     [KriptouNetworkTypeInternal.PulsechainTest]: {
         chainId: KriptouNetworkTypeInternal.PulsechainTest,
         name: 'PulseChain Testnet'
@@ -45,7 +48,11 @@ export class NetworkService {
         logger.debug('ctor');
     }
 
-    public setChainId(chainId: number): void {
+    public setChainIdHex(_chainId: number /* hexadecimal */): void {
+        this.setChainIdDecimal(parseInt(String(_chainId), 16));
+    }
+
+    public setChainIdDecimal(chainId: number): void {
         this.network = networks[chainId];
         if (this.network === undefined) {
             logger.warn('ChainId not supported: ' + chainId);
@@ -55,10 +62,10 @@ export class NetworkService {
     }
 
     public addNetworkUpdatedSubscription(
-        subscription: { listener: string; events: Array<KriptouEventInternal> },
+        subscription: { listener: string; event: KriptouEventInternal },
         fn: (...args: any) => any
-    ) {
-        this.rxNetworkUpdated.subscribe(fn);
+    ): Kriptou.Types.Subscription {
+        return this.rxNetworkUpdated.subscribe(fn);
     }
 
     public async switch(): Promise<void> {
@@ -68,7 +75,7 @@ export class NetworkService {
 
         try {
             await window.provider.send('wallet_switchEthereumChain', [
-                { chainId: `0x${KriptouNetworkTypeInternal.Rinkarby.toString(16)}` }
+                { chainId: `0x${KriptouNetworkTypeInternal.ArbitrumRinkeby.toString(16)}` }
             ]);
             logger.debug('You have succefully switched to Binance Test network');
         } catch (switchError) {
@@ -89,7 +96,7 @@ export class NetworkService {
         try {
             await window.provider.send('wallet_addEthereumChain', [
                 {
-                    chainId: `0x${KriptouNetworkTypeInternal.Rinkarby.toString(16)}`,
+                    chainId: `0x${KriptouNetworkTypeInternal.ArbitrumRinkeby.toString(16)}`,
                     chainName: 'Arbitrum Rinkeby',
                     rpcUrls: ['https://rinkeby.arbitrum.io/rpc'],
                     blockExplorerUrls: ['https://testnet.arbiscan.io/#'],
@@ -105,19 +112,3 @@ export class NetworkService {
         }
     }
 }
-
-/*
-try {
-      await provider.request({
-        method: 'wallet_addEthereumChain',
-        params: [
-        { chainId: '0x61',
-          chainName:'Smart Chain - Testnet',
-         rpcUrls:['https://data-seed-prebsc-1-s1.binance.org:8545'],                   blockExplorerUrls:['https://testnet.bscscan.com'],
-      nativeCurrency: {
-          symbol:'BNB',
-          decimals: 18}
-      });
-    } catch (addError) {
-       console.log(addError);}
- */

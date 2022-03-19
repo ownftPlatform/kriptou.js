@@ -10,10 +10,10 @@ import { PluginsService } from './plugin/plugins.service';
 import { KriptouNftInternal } from './plugin/nft-plugin.service';
 import { ContractService, KriptouContractMethodInvocationOptionsInternal } from './contract/contract.service';
 import { ethers } from 'ethers';
-import { KriptouNetworkInternal, NetworkService, KriptouNetworkTypeInternal } from './network/network.service';
-import { KriptouEventInternal } from './events';
+import { KriptouNetworkInternal, KriptouNetworkTypeInternal, NetworkService } from './network/network.service';
 import { ConfigService, KriptouConfigInternal } from './config/config.service';
 import { LogTypes, logUtil } from './util/log-util';
+import { EventService, KriptouEventInternal, KriptouSubscriptionInternal } from './event/event.service';
 
 const logger = logUtil.getLogger('Kriptou');
 
@@ -25,6 +25,7 @@ export namespace Kriptou {
         export type Network = KriptouNetworkInternal;
         export type Config = KriptouConfigInternal;
         export type LogLevels = LogTypes;
+        export type Subscription = KriptouSubscriptionInternal;
     }
 
     // Exporting 'ethers' project's utils
@@ -42,9 +43,10 @@ export namespace Kriptou {
         if (plugins === undefined) plugins = new Plugins();
         if (status === undefined) status = new Status();
         if (network === undefined) network = new Network();
-        if (web3API === undefined) web3API = new Web3API(network);
         if (config === undefined) config = new Config(_config);
+        if (web3API === undefined) web3API = new Web3API(network, config);
         if (account === undefined) account = new Account(status, web3API, _config);
+        if (_events === undefined) _events = new Events(status, network);
 
         logger.debug('init - done');
     };
@@ -53,23 +55,14 @@ export namespace Kriptou {
         return Contract.invokeContractMethod(options, User.current());
     };
 
-    export const subscribe = (
-        subscription: { listener: string; events: Array<KriptouEventInternal> },
-        fn: (...args: any) => any
-    ): void => {
-        logger.debug('subscribe - subscription:', subscription);
-        subscription.events.forEach((event: KriptouEventInternal) => {
-            if (event === KriptouEventInternal.StatusUpdated) {
-                status.addStatusUpdatedSubscription(subscription, fn);
-            }
-            if (event === KriptouEventInternal.UserLoggedIn) {
-                status.addUserLoggedInSubscription(subscription, fn);
-            }
-            if (event === KriptouEventInternal.NetworkUpdated) {
-                network.addNetworkUpdatedSubscription(subscription, fn);
-            }
-        });
-    };
+    export class Events extends EventService {
+        public static subscribe(
+            subscription: { listener: string; event: KriptouEventInternal },
+            fn: (...args: any) => any
+        ): Types.Subscription {
+            return _events.subscribe(subscription, fn);
+        }
+    }
 
     export class Web3API extends Web3Service {
         public static authenticate() {
@@ -127,8 +120,11 @@ export namespace Kriptou {
         public static current(): Config {
             return config;
         }
-        private currentConfig(): Types.Config {
-            return config.config;
+        public static enableNetworkChangeReload(): void {
+            config.enableNetworkChangeReload();
+        }
+        public static disableNetworkChangeReload(): void {
+            config.disableNetworkChangeReload();
         }
     }
 
@@ -139,6 +135,7 @@ export namespace Kriptou {
     let account: Account;
     let plugins: Plugins;
     let config: Config;
+    let _events: Events;
 
     export class Contract extends ContractService {}
 }
