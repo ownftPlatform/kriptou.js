@@ -8,6 +8,7 @@ import { ethers } from 'ethers';
 import { ContractService } from '../contract/contract.service';
 import { NetworkService } from '../network/network.service';
 import { logUtil } from '../util/log-util';
+import { ConfigService } from '../config/config.service';
 
 const web3 = require('web3');
 
@@ -21,7 +22,7 @@ export class Web3Service {
     private enable: any;
     public rxWeb3: ReplaySubject<any> = new ReplaySubject();
 
-    constructor(private readonly networkService: NetworkService) {
+    constructor(private readonly networkService: NetworkService, private configService?: ConfigService) {
         logger.debug('ctor');
         this.initWeb3();
     }
@@ -43,7 +44,7 @@ export class Web3Service {
             window.web3.eth.getChainId().then((chainId: number) => {
                 logger.info('initWeb3 - chainId:', chainId);
                 window.chainId = chainId;
-                this.networkService.setChainId(chainId);
+                this.networkService.setChainIdDecimal(chainId);
                 ContractService.BLOCKCHAIN = window.web3.eth;
                 this.rxWeb3.next([this.web3, window.web3, window.web3.eth]);
             });
@@ -70,13 +71,16 @@ export class Web3Service {
             window.location.reload();
         });
 
-        ethereum.on('chainChanged', (_chainId: any) => {
+        ethereum.on('chainChanged', (chainId: any) => {
             // Handle the new chain.
             // Correctly handling chain changes can be complicated.
             // We recommend reloading the page unless you have good reason not to.
             // window.location.reload();
             logger.debug('setupEvents - chainChanged');
-            window.location.reload();
+            this.networkService.setChainIdHex(chainId);
+            if (this.configService.isNetworkChangeReloadEnabled) {
+                window.location.reload();
+            }
         });
 
         ethereum.on('connect', (_connectInfo: any) => {

@@ -5,8 +5,8 @@
 
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Kriptou } from '../index';
-import { KriptouEventInternal } from '../events';
 import { logUtil } from '../util/log-util';
+import { KriptouEventInternal } from '../event/event.service';
 
 export enum StatusValue {
     NotReady,
@@ -57,15 +57,15 @@ export class StatusService {
     }
 
     public addStatusUpdatedSubscription(
-        subscription: { listener: string; events: Array<KriptouEventInternal> },
+        subscription: { listener: string; event: KriptouEventInternal },
         fn: (...args: any) => any
-    ) {
-        this.rxStatusUpdated.subscribe(fn);
+    ): Kriptou.Types.Subscription {
+        return this.rxStatusUpdated.subscribe(fn);
     }
     public addUserLoggedInSubscription(
-        subscription: { listener: string; events: Array<KriptouEventInternal> },
+        subscription: { listener: string; event: KriptouEventInternal },
         fn: (...args: any) => any
-    ) {
-        this.rxUserLoggedIn.subscribe(fn);
+    ): Kriptou.Types.Subscription {
+        return this.rxUserLoggedIn.subscribe(fn);
     }
 }

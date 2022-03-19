@@ -17,15 +17,35 @@ export interface KriptouConfigInternal {
         walletNotConnectedHandler?: () => void;
         chainCheckFailedHandler?: () => void;
     };
+    networkChangeReloadEnabled?: boolean;
 }
 
 const logger = logUtil.getLogger('ConfigService');
 
 export class ConfigService {
+    public get isNetworkChangeReloadEnabled(): boolean {
+        return this.networkChangeReloadEnabled;
+    }
+
+    private networkChangeReloadEnabled: boolean = true;
+
     constructor(public readonly config?: Kriptou.Types.Config) {
-        if (this.config !== undefined && this.config.logger !== undefined) {
-            logUtil.updateLevel(this.config.logger.level);
+        if (this.config !== undefined) {
+            if (this.config.logger !== undefined) {
+                logUtil.updateLevel(this.config.logger.level);
+            }
+            if (this.config.networkChangeReloadEnabled !== undefined) {
+                this.networkChangeReloadEnabled = this.config.networkChangeReloadEnabled;
+            }
         }
+    }
+
+    public enableNetworkChangeReload(): void {
+        this.networkChangeReloadEnabled = true;
+    }
+
+    public disableNetworkChangeReload(): void {
+        this.networkChangeReloadEnabled = false;
     }
 
     public async validateNetwork(): Promise<boolean> {
