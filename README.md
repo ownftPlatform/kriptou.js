@@ -44,7 +44,7 @@ Kriptou.init(
 #### React to 'UserLoggedIn' event (async):
 
 ```typescript
-Kriptou.subscribe(
+Kriptou.Events.subscribe(
     {
         listener: 'ListenerName ',
         event: Kriptou.events.UserLoggedIn
@@ -60,7 +60,7 @@ This `subscribe` method returns a `Kriptou.Types.Subscription` which can be used
 #### React to 'NetworkUpdated' event (async):
 
 ```typescript
-Kriptou.subscribe(
+Kriptou.Events.subscribe(
     {
         listener: 'ListenerName',
         event: Kriptou.events.NetworkUpdated
