@@ -73,6 +73,34 @@ Kriptou.Events.subscribe(
 
 This `subscribe` method returns a `Kriptou.Types.Subscription` which can be used to unsubscribe again.
 
+### Signature methods
+
+#### sign
+
+Calculates an Ethereum specific signature (`web3.eth.personal.sign`).
+
+```typescript
+Kriptou.Signature.sign
+```
+
+#### verifySigner
+
+Verifies whether the connected address (or the one provided as argument) signed the data with the `sign` method.
+
+It uses the `getSigner` method under the hood.
+
+```typescript
+Kriptou.Signature.verifySigner
+```
+
+#### getSigner
+
+Gets the account (`web3.eth.personal.ecRecover`) that signed the data with the `sign` method.
+
+```typescript
+Kriptou.Signature.getSigner
+```
+
 ### Next steps
 
 #### Connect wallet

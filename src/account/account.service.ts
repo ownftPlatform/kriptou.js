@@ -30,9 +30,9 @@ export class AccountService {
     private account: any;
     private blockchain: any;
 
-    constructor(private status: Kriptou.Status, web3API: Kriptou.Web3API, private config?: Kriptou.Types.Config) {
+    constructor(private status: Kriptou.Status, web3: Kriptou.Web3, private config?: Kriptou.Types.Config) {
         logger.debug('ctor');
-        this.web3Service = web3API;
+        this.web3Service = web3;
         this.web3Service.rxWeb3.subscribe((result: any) => {
             this.blockchain = result[2];
             this.getUserBalance()

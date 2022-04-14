@@ -9,6 +9,7 @@ import { ContractService } from '../contract/contract.service';
 import { NetworkService } from '../network/network.service';
 import { logUtil } from '../util/log-util';
 import { ConfigService } from '../config/config.service';
+import { Kriptou } from '../index';
 
 const web3 = require('web3');
 
@@ -100,5 +101,29 @@ export class Web3Service {
 
     public connectWallet(): void {
         this.enable = this.enableMetaMaskAccount();
+    }
+
+    /**
+     * <p>
+     * Personal sign.
+     */
+    public sign(data: any): Promise<any> {
+        return window.web3.eth.personal.sign(data, Kriptou.User.current().address, '');
+    }
+
+    /**
+     * <p>
+     * When <code>address</code> is specified then it will be used to compare to the <code>recoveredAddress</code>,
+     * otherwise the loggedIn user's address is used for the comparison.
+     */
+    public verifySigner(data: any, signature: any, address?: string): Promise<boolean> {
+        return this.getSigner(data, signature).then((recoveredAddress: any) => {
+            if (address !== undefined) return address.toLowerCase() === recoveredAddress.toLowerCase();
+            return Kriptou.User.current().address.toLowerCase() === recoveredAddress.toLowerCase();
+        });
+    }
+
+    public getSigner(data: any, signature: any): Promise<string> {
+        return window.web3.eth.personal.ecRecover(data, signature);
     }
 }

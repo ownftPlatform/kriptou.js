@@ -44,8 +44,8 @@ export namespace Kriptou {
         if (status === undefined) status = new Status();
         if (network === undefined) network = new Network();
         if (config === undefined) config = new Config(_config);
-        if (web3API === undefined) web3API = new Web3API(network, config);
-        if (account === undefined) account = new Account(status, web3API, _config);
+        if (web3 === undefined) web3 = new Web3(network, config);
+        if (account === undefined) account = new Account(status, web3, _config);
         if (_events === undefined) _events = new Events(status, network);
 
         logger.debug('init - done');
@@ -64,9 +64,31 @@ export namespace Kriptou {
         }
     }
 
-    export class Web3API extends Web3Service {
+    export namespace Signature {
+        /**
+         * Personal sign.
+         */
+        export const sign = (data: any): Promise<any> => {
+            return web3.sign(data);
+        };
+
+        /**
+         * <p>
+         * When <code>address</code> is specified then it will be used to compare to the <code>recoveredAddress</code>,
+         * otherwise the loggedIn user's address is used for the comparison.
+         */
+        export const verifySigner = (data: any, signature: any, address?: string): Promise<boolean> => {
+            return web3.verifySigner(data, signature, address);
+        };
+
+        export const getSigner = (data: any, signature: any): Promise<string> => {
+            return web3.getSigner(data, signature);
+        };
+    }
+
+    export class Web3 extends Web3Service {
         public static authenticate() {
-            web3API.connectWallet();
+            web3.connectWallet();
         }
     }
 
@@ -131,7 +153,7 @@ export namespace Kriptou {
     let user: User;
     let status: Status;
     let network: Network;
-    let web3API: Web3API;
+    let web3: Web3;
     let account: Account;
     let plugins: Plugins;
     let config: Config;
