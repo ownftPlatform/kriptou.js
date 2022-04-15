@@ -1,3 +1,13 @@
+# 0.0.32 (2022-04-15)
+
+### Features
+
+* feat(eth-personal-sign): Added `ETH personal sign` methods via `MM` usage. (kr1p70n1c) ([`b05806a`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/b05806a3850b7e35eae6c701047a56b63338a090))
+
+### Chore
+
+* chore(eth-personal-sign): Bumped version. (kr1p70n1c) ([`fc935ef`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/fc935ef372d2807223f3c9fa6ea728f7d7a7cdba))
+
 # 0.0.31 (2022-03-19)
 
 ### Features
@@ -11,6 +21,7 @@
 ### Documentation
 
 * docs(events): Updated the `README`. (kr1p70n1c) ([`adfbad1`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/adfbad10bba60513d9059c667c725b363ff433fa))
+* docs(changelog): `CHANGELOG` for `0.0.31` release. (kr1p70n1c) ([`fcd70b1`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/fcd70b152b1c33658fa5c0c5f802ad92b46256ad))
 * docs(readme): Updated the `README.md` doc. (kr1p70n1c) ([`f6317d0`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/f6317d0822e93ce50fdc7f0981cf32c9ed9ad6d6))
 
 ### Chore
