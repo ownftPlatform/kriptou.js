@@ -1,8 +1,26 @@
+# 0.0.33 (2022-05-24)
+
+### Features
+
+* feat(accounts-change-config): Made actions for `Accounts Changed` configurable (#110) (kr1p70n1c) ([`539615e`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/539615ec1a71ddeab106dde18cdce96eae030729))
+
+### Documentation
+
+* docs(accounts-change-config): Updated the documentation with the latest config changes (#110) (kr1p70n1c) ([`71f7015`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/71f7015a54384db888e72f1d003f983ab7e0f059))
+
+### Chore
+
+* chore(accounts-change-config): Bumped version and upgraded pacakges (#110) (kr1p70n1c) ([`11ca219`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/11ca2198df9c16bd9f396d5f85292633737e0bdb))
+
 # 0.0.32 (2022-04-15)
 
 ### Features
 
 * feat(eth-personal-sign): Added `ETH personal sign` methods via `MM` usage. (kr1p70n1c) ([`b05806a`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/b05806a3850b7e35eae6c701047a56b63338a090))
+
+### Documentation
+
+* docs(changelog): `CHANGELOG` for `0.0.32` release. (kr1p70n1c) ([`7558ca6`](https://bitbucket.org/wen-moon-market/kriptou.js/commits/7558ca65a21e616a2caea6a405f1b8279d4be40a))
 
 ### Chore
 
