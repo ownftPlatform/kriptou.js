@@ -65,18 +65,23 @@ export class Web3Service {
     }
 
     private setupEvents(ethereum: any): void {
-        ethereum.on('accountsChanged', (_accounts: any) => {
+        ethereum.on('accountsChanged', (accounts: Array<string>) => {
             // Handle the new accounts, or lack thereof.
             // "accounts" will always be an array, but it can be empty.
             logger.debug('setupEvents - accountsChanged');
-            window.location.reload();
+            if (this.configService.isAccountsChangeReloadEnabled) {
+                window.location.reload();
+            } else {
+                if (this.configService.config.accounts.changeHandler) {
+                    this.configService.config.accounts.changeHandler(accounts);
+                }
+            }
         });
 
         ethereum.on('chainChanged', (chainId: any) => {
             // Handle the new chain.
             // Correctly handling chain changes can be complicated.
             // We recommend reloading the page unless you have good reason not to.
-            // window.location.reload();
             logger.debug('setupEvents - chainChanged');
             this.networkService.setChainIdHex(chainId);
             if (this.configService.isNetworkChangeReloadEnabled) {
