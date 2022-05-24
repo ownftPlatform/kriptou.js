@@ -7,17 +7,48 @@ import { Kriptou } from '../index';
 import { logUtil } from '../util/log-util';
 
 export interface KriptouConfigInternal {
+    /**
+     * The log level.
+     */
     logger?: {
         level: Kriptou.Types.LogLevels;
     };
+
+    /**
+     * Chain/network configuration.
+     */
     chain?: {
         performValidation?: boolean;
         delayValidation?: boolean;
         supportedChains?: Array<number>;
         walletNotConnectedHandler?: () => void;
         chainCheckFailedHandler?: () => void;
+
+        /**
+         * Whether the page reloads when the chain/network has changed.
+         */
+        changeReloadEnabled?: boolean;
     };
-    networkChangeReloadEnabled?: boolean;
+
+    /**
+     * Accounts configuration.
+     */
+    accounts?: {
+        /**
+         * Whether the page reloads when the account has changed.
+         *
+         * When the `changeHandler` is configured this setting is ignored and the page reload will not execute.
+         */
+        changeReloadEnabled: boolean;
+
+        /**
+         * Handler to execute when the account has changed.
+         *
+         * When this handler is configured then the page will not auto reload, the developer will have to implement the
+         * page-reload in the handler if this behaviour is required.
+         */
+        changeHandler?: (accounts: Array<string>) => void;
+    };
 }
 
 const logger = logUtil.getLogger('ConfigService');
@@ -27,15 +58,27 @@ export class ConfigService {
         return this.networkChangeReloadEnabled;
     }
 
+    public get isAccountsChangeReloadEnabled(): boolean {
+        return this.accountsChangeReloadEnabled;
+    }
+
     private networkChangeReloadEnabled: boolean = true;
+    private accountsChangeReloadEnabled: boolean = true;
 
     constructor(public readonly config?: Kriptou.Types.Config) {
         if (this.config !== undefined) {
             if (this.config.logger !== undefined) {
                 logUtil.updateLevel(this.config.logger.level);
             }
-            if (this.config.networkChangeReloadEnabled !== undefined) {
-                this.networkChangeReloadEnabled = this.config.networkChangeReloadEnabled;
+            if (this.config.chain.changeReloadEnabled !== undefined) {
+                this.networkChangeReloadEnabled = this.config.chain.changeReloadEnabled;
+            }
+            if (this.config.accounts !== undefined) {
+                this.accountsChangeReloadEnabled = this.config.accounts.changeReloadEnabled;
+                if (this.config.accounts.changeHandler !== undefined) {
+                    // Disable reload when handler configured
+                    this.accountsChangeReloadEnabled = false;
+                }
             }
         }
     }

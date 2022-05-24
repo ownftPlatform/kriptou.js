@@ -20,9 +20,16 @@ Kriptou.init();
 ```typescript
 Kriptou.init(
     {
+        /**
+         * The log level.
+         */
         logger: {
             level: 'info'
         },
+
+        /**
+         * Chain/network configuration.
+         */
         chain: {
             performValidation: boolean,
             delayValidation: boolean,
@@ -32,9 +39,35 @@ Kriptou.init(
             },
             chainCheckFailedHandler: () => {
                 // When the current Chain Id selected in the wallet needs to be changed
-            }
+            },
+            
+            /**
+             * Whether the page reloads when the chain/network has changed.
+             */
+            changeReloadEnabled: boolean
         },
-        networkChangeReloadEnabled: boolean
+
+        /**
+         * Accounts configuration.
+         */
+        accounts: {
+            /**
+             * Whether the page reloads when the account has changed.
+             *
+             * When the `changeHandler` is configured this setting is ignored and the page reload will not execute.
+             */
+            changeReloadEnabled: boolean,
+
+            /**
+             * Handler to execute when the account has changed.
+             *
+             * When this handler is configured then the page will not auto reload, the developer will have to implement the
+             * page-reload in the handler if this behaviour is required.
+             */
+            changeHandler: (accounts: Array<string>) => {
+                // When the account has changed (accounts is string array of connected wallet addresses)
+            }
+        }
     }
 );
 ```
