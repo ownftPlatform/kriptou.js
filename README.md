@@ -1,5 +1,7 @@
 <h2 align="center">Kriptou (crypto) SDK for JavaScript</h2>
 
+[![NPM Package Version][npm-image-version]][npm-url] [![NPM Package Downloads][npm-image-downloads]][npm-url] [![Build Status][actions-image]][actions-url]
+
 A library that gives you access to the underlying blockchain
 
 - all client side
