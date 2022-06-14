@@ -5,7 +5,7 @@
 
 import { AccountService, KriptouUserInternal } from './account/account.service';
 import { StatusService } from './status/status.service';
-import { Web3Service } from './web3/web3.service';
+import { KriptouSignTypeInternal, Web3Service } from './web3/web3.service';
 import { PluginsService } from './plugin/plugins.service';
 import { KriptouNftInternal } from './plugin/nft-plugin.service';
 import { ContractService, KriptouContractMethodInvocationOptionsInternal } from './contract/contract.service';
@@ -26,6 +26,7 @@ export namespace Kriptou {
         export type Config = KriptouConfigInternal;
         export type LogLevels = LogTypes;
         export type Subscription = KriptouSubscriptionInternal;
+        export type SignType = KriptouSignTypeInternal;
     }
 
     // Exporting 'ethers' project's utils
@@ -33,6 +34,7 @@ export namespace Kriptou {
 
     export const events = KriptouEventInternal;
     export const supportedNetworks = KriptouNetworkTypeInternal;
+    export const signTypes = KriptouSignTypeInternal;
 
     /**
      * Initialises the environment.
@@ -59,17 +61,18 @@ export namespace Kriptou {
         public static subscribe(
             subscription: { listener: string; event: KriptouEventInternal },
             fn: (...args: any) => any
-        ): Types.Subscription {
+        ): Kriptou.Types.Subscription {
             return _events.subscribe(subscription, fn);
         }
     }
 
     export namespace Signature {
         /**
-         * Personal sign.
+         * <p>
+         * Performs a sign.  When no <code>type</code> is specified it will assume <code>PersonalSign</code> by default.
          */
-        export const sign = (data: any): Promise<any> => {
-            return web3.sign(data);
+        export const sign = (data: any, type: Kriptou.Types.SignType = KriptouSignTypeInternal.PersonalSign): Promise<any> => {
+            return web3.sign(data, type);
         };
 
         /**
@@ -98,12 +101,12 @@ export namespace Kriptou {
         }
     }
 
-    export class User implements Types.User {
-        public static current(): Types.User {
+    export class User implements Kriptou.Types.User {
+        public static current(): Kriptou.Types.User {
             logger.debug('User :: current - user:', user);
             return user;
         }
-        public static currentPromise(performWalletNotConnectedHandler: boolean = true): Promise<Types.User> {
+        public static currentPromise(performWalletNotConnectedHandler: boolean = true): Promise<Kriptou.Types.User> {
             logger.debug('User :: currentPromise - user:', user);
             return account.getUser(performWalletNotConnectedHandler);
         }
@@ -122,7 +125,7 @@ export namespace Kriptou {
     export class Plugins extends PluginsService {}
 
     export class Network extends NetworkService {
-        public static currentNetwork(): Types.Network | undefined {
+        public static currentNetwork(): Kriptou.Types.Network | undefined {
             return network.network;
         }
 
