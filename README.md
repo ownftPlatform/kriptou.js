@@ -1,9 +1,11 @@
 <h2 align="center">Kriptou (crypto) SDK for JavaScript</h2>
 
+[![NPM Package Version][npm-image-version]][npm-url] [![NPM Package Downloads][npm-image-downloads]][npm-url] [![Build Status][actions-image]][actions-url]
+
 A library that gives you access to the underlying blockchain
 
 - all client side
-- no backend needed</li>
+- no backend needed
 
 ## Getting started
 
@@ -134,6 +136,12 @@ Gets the account (`web3.eth.personal.ecRecover`) that signed the data with the `
 Kriptou.Signature.getSigner
 ```
 
+### Wyvern Protocol
+
+```
+[TBC]
+```
+
 ### Next steps
 
 #### Connect wallet
@@ -209,3 +217,8 @@ Dev dependencies:
 npm i @angular-builders/custom-webpack process --save-dev
 ```
 
+[npm-image-version]: https://img.shields.io/npm/v/kriptou.js.svg
+[npm-image-downloads]: https://img.shields.io/npm/dm/kriptou.js.svg
+[npm-url]: https://npmjs.org/package/kriptou.js
+[actions-image]: https://github.com/kr1p70n1c/kriptou.js/actions/workflows/github-actions.yml/badge.svg
+[actions-url]: https://github.com/kr1p70n1c/kriptou.js/actions/workflows/github-actions.yml

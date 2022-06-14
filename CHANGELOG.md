@@ -1,3 +1,26 @@
+# 0.0.36 (2022-06-14)
+
+### Fixes
+
+* fix(readme): Removed unnecessary text from `README`. (kr1p70n1c) ([`e81a199`](https://github.com/kr1p70n1c/kriptou.js/commit/e81a1992f8a6b12e7e14ce6873b08e8252a4c399))
+
+### CI
+
+* ci(actions): Debugging workflow that does not start. (kr1p70n1c) ([`36b918a`](https://github.com/kr1p70n1c/kriptou.js/commit/36b918ad47748fea369edd9c711f8544eb1363e4))
+* ci(actions): Debugging workflow that does not start. (kr1p70n1c) ([`030d33d`](https://github.com/kr1p70n1c/kriptou.js/commit/030d33d080d77446f406fa834b86182015f9ff17))
+
+### Chore
+
+* chore(version): Bumped the version. (kr1p70n1c) ([`64851bb`](https://github.com/kr1p70n1c/kriptou.js/commit/64851bb198a73134878193b3f4a19469d9008689))
+
+### Misc (pre semantic commit messages)
+
+* Merge pull request #2 from kr1p70n1c/feature/doc-updates (kr1p70n1c) ([`6e51182`](https://github.com/kr1p70n1c/kriptou.js/commit/6e51182b5644f884ce12d7faef02e7e6cdca8411))
+* doc(wyvern): Added placeholder heading for `Wyvern Protocol`. (kr1p70n1c) ([`cc7e1bd`](https://github.com/kr1p70n1c/kriptou.js/commit/cc7e1bdfcc5530422a8e09b601b5d41d6bc89d28))
+* doc(extra-info): Updated `README` to resolve items not specified before. (kr1p70n1c) ([`c095eb9`](https://github.com/kr1p70n1c/kriptou.js/commit/c095eb99213aa3d09128ce0f3ba5f2737c7a868b))
+* doc(badge): Updated the badge for the `PR workflow. (kr1p70n1c) ([`551bb28`](https://github.com/kr1p70n1c/kriptou.js/commit/551bb2847785abd555e41a91ceb189575b8fadf9))
+* doc(extra-info): Added extra info to display in the `README`. (kr1p70n1c) ([`d5f0e6d`](https://github.com/kr1p70n1c/kriptou.js/commit/d5f0e6d639d4634d3991186ad71370a618aba6c4))
+
 # 0.0.35 (2022-06-14)
 
 ### Features
@@ -7,6 +30,7 @@
 ### Documentation
 
 * docs(changelog): `CHANGELOG` for `0.0.35` release. (kr1p70n1c) ([`7cbaa4b`](https://github.com/kr1p70n1c/kriptou.js/commit/7cbaa4bdd7273aaa7c50cfacc69965c726a8c192))
+* docs(changelog): Updated `CHANGELOG` for `0.0.35` release again. (kr1p70n1c) ([`4e2dc8d`](https://github.com/kr1p70n1c/kriptou.js/commit/4e2dc8d9f4e9dad7b42a87f98125e1d08750f30c))
 
 ### CI
 
