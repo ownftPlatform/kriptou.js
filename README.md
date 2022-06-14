@@ -136,6 +136,12 @@ Gets the account (`web3.eth.personal.ecRecover`) that signed the data with the `
 Kriptou.Signature.getSigner
 ```
 
+### Wyvern Protocol
+
+```
+[TBC]
+```
+
 ### Next steps
 
 #### Connect wallet
