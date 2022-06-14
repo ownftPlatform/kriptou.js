@@ -5,7 +5,7 @@
 A library that gives you access to the underlying blockchain
 
 - all client side
-- no backend needed</li>
+- no backend needed
 
 ## Getting started
 
