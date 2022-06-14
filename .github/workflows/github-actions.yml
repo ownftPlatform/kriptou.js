@@ -5,6 +5,7 @@ on:
 #        branches: [ $default-branch ]
     pull_request:
         branches: [ develop ]
+        types: [ assigned, opened, synchronize, reopened, edited ]
 
 jobs:
     build:
