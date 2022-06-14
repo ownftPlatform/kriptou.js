@@ -2,4 +2,4 @@
 
 npm run changelog
 
-sed -i -e "s/-wenmoonmarket/.org/g" CHANGELOG.md
+sed -i -e "s/-kr1p70n1c/.com/g" CHANGELOG.md
