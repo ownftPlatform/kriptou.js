@@ -211,3 +211,8 @@ Dev dependencies:
 npm i @angular-builders/custom-webpack process --save-dev
 ```
 
+[npm-image-version]: https://img.shields.io/npm/v/kriptou.js.svg
+[npm-image-downloads]: https://img.shields.io/npm/dm/kriptou.js.svg
+[npm-url]: https://npmjs.org/package/kriptou.js
+[actions-image]: https://github.com/kr1p70n1c/kriptou.js/workflows/Build/badge.svg
+[actions-url]: https://github.com/kr1p70n1c/kriptou.js/actions
