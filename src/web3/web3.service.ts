@@ -16,6 +16,15 @@ const web3 = require('web3');
 declare let require: any;
 declare let window: any;
 
+export enum KriptouSignTypeInternal {
+    EthSign,
+    PersonalSign,
+    SignTypedData,
+    SignTypedDataV1,
+    SignTypedDataV3,
+    SignTypedDataV4
+}
+
 const logger = logUtil.getLogger('Web3Service');
 
 export class Web3Service {
@@ -112,8 +121,28 @@ export class Web3Service {
      * <p>
      * Personal sign.
      */
-    public sign(data: any): Promise<any> {
-        return window.web3.eth.personal.sign(data, Kriptou.User.current().address, '');
+    public sign(data: any, type: Kriptou.Types.SignType): Promise<any> {
+        switch (type) {
+            case KriptouSignTypeInternal.PersonalSign:
+                return window.web3.eth.personal.sign(data, Kriptou.User.current().address, '');
+            case KriptouSignTypeInternal.SignTypedDataV3:
+                return window.ethereum.request({
+                    method: 'eth_signTypedData_v3',
+                    params: [Kriptou.User.current().address, JSON.stringify(data)]
+                });
+            case KriptouSignTypeInternal.EthSign: {
+                throw new Error('Not implemented yet: EthSign case');
+            }
+            case KriptouSignTypeInternal.SignTypedData: {
+                throw new Error('Not implemented yet: SignTypedData case');
+            }
+            case KriptouSignTypeInternal.SignTypedDataV1: {
+                throw new Error('Not implemented yet: SignTypedDataV1 case');
+            }
+            case KriptouSignTypeInternal.SignTypedDataV4: {
+                throw new Error('Not implemented yet: SignTypedDataV4 case');
+            }
+        }
     }
 
     /**
