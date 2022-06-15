@@ -69,6 +69,16 @@ Kriptou.init(
             changeHandler: (accounts: Array<string>) => {
                 // When the account has changed (accounts is string array of connected wallet addresses)
             }
+        },
+
+        /**
+         * Wyvern Protocol configuration.
+         */
+        wyvernProtocol: {
+            /**
+             * The address of the deployed exchange.
+             */
+            exchangeAddress: string
         }
     }
 );

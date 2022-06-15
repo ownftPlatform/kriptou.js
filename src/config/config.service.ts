@@ -49,6 +49,21 @@ export interface KriptouConfigInternal {
          */
         changeHandler?: (accounts: Array<string>) => void;
     };
+
+    /**
+     * Wyvern Protocol configuration.
+     */
+    wyvernProtocol?: {
+        /**
+         * The address of the deployed exchange.
+         */
+        exchangeAddress: string;
+    };
+
+    // eslint-disable-next-line etc/no-commented-out-code
+    // environment?: {
+    //     web3?: Web3;
+    // };
 }
 
 const logger = logUtil.getLogger('ConfigService');
@@ -70,7 +85,7 @@ export class ConfigService {
             if (this.config.logger !== undefined) {
                 logUtil.updateLevel(this.config.logger.level);
             }
-            if (this.config.chain.changeReloadEnabled !== undefined) {
+            if (this.config.chain !== undefined && this.config.chain.changeReloadEnabled !== undefined) {
                 this.networkChangeReloadEnabled = this.config.chain.changeReloadEnabled;
             }
             if (this.config.accounts !== undefined) {
@@ -80,6 +95,10 @@ export class ConfigService {
                     this.accountsChangeReloadEnabled = false;
                 }
             }
+            // eslint-disable-next-line etc/no-commented-out-code
+            // if (this.config.environment !== undefined && this.config.environment.web3 !== undefined) {
+            //     globalThis.web3 = this.config.environment.web3;
+            // }
         }
     }
 

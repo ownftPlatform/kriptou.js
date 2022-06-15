@@ -42,12 +42,12 @@ export namespace Kriptou {
     export const init = (_config?: Kriptou.Types.Config): void => {
         logger.debug('init - init');
 
-        if (plugins === undefined) plugins = new Plugins();
         if (status === undefined) status = new Status();
         if (network === undefined) network = new Network();
         if (config === undefined) config = new Config(_config);
         if (web3 === undefined) web3 = new Web3(network, config);
         if (account === undefined) account = new Account(status, web3, _config);
+        if (plugins === undefined) plugins = new Plugins(_config);
         if (_events === undefined) _events = new Events(status, network);
 
         logger.debug('init - done');
@@ -122,7 +122,16 @@ export namespace Kriptou {
         }
     }
 
-    export class Plugins extends PluginsService {}
+    export class Plugins extends PluginsService {
+        // Need to make new plugins statically available here
+        public static nft() {
+            return plugins.nft;
+        }
+
+        public static wyvern() {
+            return plugins.wyvern;
+        }
+    }
 
     export class Network extends NetworkService {
         public static currentNetwork(): Kriptou.Types.Network | undefined {

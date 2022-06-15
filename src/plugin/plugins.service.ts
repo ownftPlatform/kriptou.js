@@ -4,14 +4,21 @@
  **************************/
 
 import { NftPluginService } from './nft-plugin.service';
+import { WyvernPluginService } from './wyvern-plugin.service';
 import { logUtil } from '../util/log-util';
+import { Kriptou } from '../index';
 
 const logger = logUtil.getLogger('PluginsService');
 
+/**
+ * Instantiate all plugins here.
+ */
 export class PluginsService {
-    constructor() {
-        logger.debug('ctor');
-    }
+    public nft: NftPluginService = new NftPluginService();
+    public wyvern: WyvernPluginService;
 
-    public static NFT: NftPluginService = new NftPluginService();
+    constructor(config?: Kriptou.Types.Config) {
+        logger.debug('ctor');
+        this.wyvern = new WyvernPluginService(config);
+    }
 }
