@@ -59,11 +59,6 @@ export interface KriptouConfigInternal {
          */
         exchangeAddress: string;
     };
-
-    // eslint-disable-next-line etc/no-commented-out-code
-    // environment?: {
-    //     web3?: Web3;
-    // };
 }
 
 const logger = logUtil.getLogger('ConfigService');
@@ -95,10 +90,6 @@ export class ConfigService {
                     this.accountsChangeReloadEnabled = false;
                 }
             }
-            // eslint-disable-next-line etc/no-commented-out-code
-            // if (this.config.environment !== undefined && this.config.environment.web3 !== undefined) {
-            //     globalThis.web3 = this.config.environment.web3;
-            // }
         }
     }
 
