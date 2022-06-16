@@ -49,6 +49,16 @@ export interface KriptouConfigInternal {
          */
         changeHandler?: (accounts: Array<string>) => void;
     };
+
+    /**
+     * Wyvern Protocol configuration.
+     */
+    wyvernProtocol?: {
+        /**
+         * The address of the deployed exchange.
+         */
+        exchangeAddress: string;
+    };
 }
 
 const logger = logUtil.getLogger('ConfigService');
@@ -70,7 +80,7 @@ export class ConfigService {
             if (this.config.logger !== undefined) {
                 logUtil.updateLevel(this.config.logger.level);
             }
-            if (this.config.chain.changeReloadEnabled !== undefined) {
+            if (this.config.chain !== undefined && this.config.chain.changeReloadEnabled !== undefined) {
                 this.networkChangeReloadEnabled = this.config.chain.changeReloadEnabled;
             }
             if (this.config.accounts !== undefined) {

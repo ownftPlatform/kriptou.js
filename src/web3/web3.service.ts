@@ -10,11 +10,11 @@ import { NetworkService } from '../network/network.service';
 import { logUtil } from '../util/log-util';
 import { ConfigService } from '../config/config.service';
 import { Kriptou } from '../index';
+import { isBrowser } from '../util/common';
 
 const web3 = require('web3');
 
 declare let require: any;
-declare let window: any;
 
 export enum KriptouSignTypeInternal {
     EthSign,
@@ -38,37 +38,37 @@ export class Web3Service {
     }
 
     private initWeb3(): void {
-        if (window.ethereum === undefined) {
-            window.alert('Non-Ethereum browser detected. Install MetaMask');
+        if (globalThis.ethereum === undefined) {
+            if (isBrowser) globalThis.alert('Non-Ethereum browser detected. Install MetaMask');
         } else {
-            this.setupEvents(window.ethereum);
+            this.setupEvents(globalThis.ethereum);
             this.web3 =
-                typeof window.web3 !== 'undefined'
-                    ? window.web3.currentProvider
+                typeof globalThis.web3 !== 'undefined'
+                    ? globalThis.web3.currentProvider
                     : new web3.providers.HttpProvider('http://localhost:8545');
-            window.web3 = new web3(window.ethereum);
-            window.provider = new ethers.providers.Web3Provider(window.ethereum);
+            globalThis.web3 = new web3(globalThis.ethereum);
+            globalThis.provider = new ethers.providers.Web3Provider(globalThis.ethereum);
             logger.debug('this.web3:', this.web3);
-            logger.debug('window.web3:', window.web3);
+            logger.debug('globalThis.web3:', globalThis.web3);
 
-            window.web3.eth.getChainId().then((chainId: number) => {
+            globalThis.web3.eth.getChainId().then((chainId: number) => {
                 logger.info('initWeb3 - chainId:', chainId);
-                window.chainId = chainId;
+                globalThis.chainId = chainId;
                 this.networkService.setChainIdDecimal(chainId);
-                ContractService.BLOCKCHAIN = window.web3.eth;
-                this.rxWeb3.next([this.web3, window.web3, window.web3.eth]);
+                ContractService.BLOCKCHAIN = globalThis.web3.eth;
+                this.rxWeb3.next([this.web3, globalThis.web3, globalThis.web3.eth]);
             });
         }
     }
 
     private async enableMetaMaskAccount(): Promise<any> {
-        if (window.ethereum === undefined) {
-            window.alert('Non-Ethereum browser detected. Install MetaMask');
+        if (globalThis.ethereum === undefined) {
+            if (isBrowser) globalThis.alert('Non-Ethereum browser detected. Install MetaMask');
             return;
         }
         let enable = false;
         await new Promise((_resolve, _reject) => {
-            enable = window.ethereum.enable();
+            enable = globalThis.ethereum.enable();
         });
         return Promise.resolve(enable);
     }
@@ -79,7 +79,7 @@ export class Web3Service {
             // "accounts" will always be an array, but it can be empty.
             logger.debug('setupEvents - accountsChanged');
             if (this.configService.isAccountsChangeReloadEnabled) {
-                window.location.reload();
+                globalThis.location.reload();
             } else {
                 if (this.configService.config.accounts.changeHandler) {
                     this.configService.config.accounts.changeHandler(accounts);
@@ -94,7 +94,7 @@ export class Web3Service {
             logger.debug('setupEvents - chainChanged');
             this.networkService.setChainIdHex(chainId);
             if (this.configService.isNetworkChangeReloadEnabled) {
-                window.location.reload();
+                globalThis.location.reload();
             }
         });
 
@@ -124,9 +124,9 @@ export class Web3Service {
     public sign(data: any, type: Kriptou.Types.SignType): Promise<any> {
         switch (type) {
             case KriptouSignTypeInternal.PersonalSign:
-                return window.web3.eth.personal.sign(data, Kriptou.User.current().address, '');
+                return globalThis.web3.eth.personal.sign(data, Kriptou.User.current().address, '');
             case KriptouSignTypeInternal.SignTypedDataV3:
-                return window.ethereum.request({
+                return globalThis.ethereum.request({
                     method: 'eth_signTypedData_v3',
                     params: [Kriptou.User.current().address, JSON.stringify(data)]
                 });
@@ -158,6 +158,6 @@ export class Web3Service {
     }
 
     public getSigner(data: any, signature: any): Promise<string> {
-        return window.web3.eth.personal.ecRecover(data, signature);
+        return globalThis.web3.eth.personal.ecRecover(data, signature);
     }
 }
