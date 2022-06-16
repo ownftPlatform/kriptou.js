@@ -148,9 +148,7 @@ Kriptou.Signature.getSigner
 
 ### Wyvern Protocol
 
-```
-[TBC]
-```
+[Documentation](src/plugin/wyvern-protocol/README.md)
 
 ### Next steps
 
