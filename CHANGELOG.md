@@ -1,8 +1,32 @@
+# 0.0.37 (2022-06-16)
+
+### Features
+
+* feat(wyvern-plugin): Started with the `Wyvern Protocol` plugin implementation. (kr1p70n1c) ([`8cbc0cd`](https://github.com/kr1p70n1c/kriptou.js/commit/8cbc0cd4482cabcef9714cb0073cfa3754ab5fcf))
+* feat(wyvern-plugin): More progress with `Wyvern` plugin, added predicate functions. (kr1p70n1c) ([`239722b`](https://github.com/kr1p70n1c/kriptou.js/commit/239722ba7b770b744b361b1e3814e731e268b19d))
+
+### Documentation
+
+* docs(wyvern-plugin): Added link to the `Wyvern` plugin document from the main `README`. (kr1p70n1c) ([`e3fe874`](https://github.com/kr1p70n1c/kriptou.js/commit/e3fe8748ba7e90856f5421ab6ed21f1de55ce844))
+
+### Chore
+
+* chore(wyvern-plugin): Removed commented code. (kr1p70n1c) ([`dd7ef69`](https://github.com/kr1p70n1c/kriptou.js/commit/dd7ef699b7195aab2d0944f5421a6087a15a0a37))
+* chore(wyvern-plugin): Bumped version. (kr1p70n1c) ([`0d0d5eb`](https://github.com/kr1p70n1c/kriptou.js/commit/0d0d5ebb07b5222c6939b46c1a037f4b95d2a871))
+
+### Misc (pre semantic commit messages)
+
+* Merge pull request #3 from kr1p70n1c/feature/wyvern-plugin (kr1p70n1c) ([`6423d7c`](https://github.com/kr1p70n1c/kriptou.js/commit/6423d7c3cffdeaf1e11771f6c431c8ddaab33574))
+
 # 0.0.36 (2022-06-14)
 
 ### Fixes
 
 * fix(readme): Removed unnecessary text from `README`. (kr1p70n1c) ([`e81a199`](https://github.com/kr1p70n1c/kriptou.js/commit/e81a1992f8a6b12e7e14ce6873b08e8252a4c399))
+
+### Documentation
+
+* docs(changelog): `CHANGELOG` for `0.0.36` release. (kr1p70n1c) ([`3e34cfc`](https://github.com/kr1p70n1c/kriptou.js/commit/3e34cfc73eade95c14706bbb77d2bd5590e34bb5))
 
 ### CI
 
