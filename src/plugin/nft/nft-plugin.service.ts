@@ -3,7 +3,7 @@
  * Copyright (c) 2022 Wen Moon Market
  **************************/
 
-import { logUtil } from '../util/log-util';
+import { logUtil } from '../../util/log-util';
 
 export interface KriptouNftInternal {
     img: string;

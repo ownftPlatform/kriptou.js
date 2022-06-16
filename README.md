@@ -69,6 +69,16 @@ Kriptou.init(
             changeHandler: (accounts: Array<string>) => {
                 // When the account has changed (accounts is string array of connected wallet addresses)
             }
+        },
+
+        /**
+         * Wyvern Protocol configuration.
+         */
+        wyvernProtocol: {
+            /**
+             * The address of the deployed exchange.
+             */
+            exchangeAddress: string
         }
     }
 );
@@ -138,9 +148,7 @@ Kriptou.Signature.getSigner
 
 ### Wyvern Protocol
 
-```
-[TBC]
-```
+[Documentation](src/plugin/wyvern-protocol/README.md)
 
 ### Next steps
 
