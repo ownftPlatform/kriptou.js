@@ -7,7 +7,7 @@ import { AccountService, KriptouUserInternal } from './account/account.service';
 import { StatusService } from './status/status.service';
 import { KriptouSignTypeInternal, Web3Service } from './web3/web3.service';
 import { PluginsService } from './plugin/plugins.service';
-import { KriptouNftInternal } from './plugin/nft-plugin.service';
+import { KriptouNftInternal } from './plugin/nft/nft-plugin.service';
 import { ContractService, KriptouContractMethodInvocationOptionsInternal } from './contract/contract.service';
 import { ethers } from 'ethers';
 import { KriptouNetworkInternal, KriptouNetworkTypeInternal, NetworkService } from './network/network.service';

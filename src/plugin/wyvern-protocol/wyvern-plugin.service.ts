@@ -3,8 +3,9 @@
  * Copyright (c) 2022 Wen Moon Market
  **************************/
 
-import { logUtil } from '../util/log-util';
-import { Kriptou } from '../index';
+import { logUtil } from '../../util/log-util';
+import { Kriptou } from '../../index';
+import { WyvernProtocolPredicate } from './predicates';
 
 // eslint-disable-next-line etc/no-commented-out-code
 // export enum WyvernProtocolStaticMarket {
@@ -16,71 +17,6 @@ import { Kriptou } from '../index';
 // export enum WyvernProtocolStaticUtil {
 //     Split = 'Split'
 // }
-
-type Address = any;
-type Uint256 = any;
-type Bytes = any;
-type Bytest4 = any;
-
-export class WyvernProtocolSelectorInput {
-    public functionDefinition: string;
-    public argumentsTypes: Array<string>;
-    public argumentsValues: Array<any>;
-}
-
-export class WyvernProtocolSelectorInputTransferERC721Exact extends WyvernProtocolSelectorInput {
-    constructor(token: Address, tokenId: Uint256) {
-        super();
-        this.functionDefinition = 'transferERC721Exact(bytes,address[7],uint8,uint256[6],bytes)';
-        this.argumentsTypes = ['address', 'uint256'];
-        this.argumentsValues = [token, tokenId];
-    }
-}
-
-export class WyvernProtocolSelectorInputTransferERC20Exact extends WyvernProtocolSelectorInput {
-    constructor(token: Address, amount: Uint256) {
-        super();
-        this.functionDefinition = 'transferERC20Exact(bytes,address[7],uint8,uint256[6],bytes)';
-        this.argumentsTypes = ['address', 'uint256'];
-        this.argumentsValues = [token, amount];
-    }
-}
-
-export class WyvernProtocolSelectorInputSequenceAnyAfter extends WyvernProtocolSelectorInput {
-    constructor(addrs: Array<Address>, extradataLengths: Array<Uint256>, selectors: Array<Bytest4>, extradatas: Bytes) {
-        super();
-        this.functionDefinition = 'sequenceAnyAfter(bytes,address[7],uint8,uint256[6],bytes)';
-        this.argumentsTypes = ['address[]', 'uint256[]', 'bytes4[]', 'bytes'];
-        this.argumentsValues = [addrs, extradataLengths, selectors, extradatas];
-    }
-}
-
-export class WyvernProtocolSelectorInputSplit extends WyvernProtocolSelectorInput {
-    constructor(targets: Array<Address>, selectors: Array<Bytest4>, firstExtradata: Bytes, secondExtradata: Bytes) {
-        super();
-        this.functionDefinition = 'split(bytes,address[7],uint8[2],uint256[6],bytes,bytes)';
-        this.argumentsTypes = ['address[2]', 'bytes4[2]', 'bytes', 'bytes'];
-        this.argumentsValues = [targets, selectors, firstExtradata, secondExtradata];
-    }
-}
-
-export class WyvernProtocolSelectorInputTransferERC20ExactTo extends WyvernProtocolSelectorInput {
-    constructor(token: Address, amount: Uint256, to: Address) {
-        super();
-        this.functionDefinition = 'transferERC20ExactTo(bytes,address[7],uint8,uint256[6],bytes)';
-        this.argumentsTypes = ['address', 'uint256', 'address'];
-        this.argumentsValues = [token, amount, to];
-    }
-}
-
-export class WyvernProtocolSelectorInputSequenceExact extends WyvernProtocolSelectorInput {
-    constructor(addrs: Array<Address>, extradataLengths: Array<Uint256>, selectors: Array<Bytest4>, extradatas: Bytes) {
-        super();
-        this.functionDefinition = 'sequenceExact(bytes,address[7],uint8,uint256[6],bytes)';
-        this.argumentsTypes = ['address[]', 'uint256[]', 'bytes4[]', 'bytes'];
-        this.argumentsValues = [addrs, extradataLengths, selectors, extradatas];
-    }
-}
 
 // eslint-disable-next-line etc/no-commented-out-code
 // const functionMappings: Record<WyvernProtocolStaticMarket | WyvernProtocolStaticUtil, string> = {
@@ -122,7 +58,7 @@ export class WyvernPluginService {
         logger.debug('ctor');
     }
 
-    public getSelectorWithExtraData<T extends WyvernProtocolSelectorInput>(input: T): any {
+    public getSelectorWithExtraData(input: WyvernProtocolPredicate): any {
         return {
             selector: globalThis.web3.eth.abi.encodeFunctionSignature(input.functionDefinition),
             extraData: globalThis.web3.eth.abi.encodeParameters(input.argumentsTypes, input.argumentsValues)

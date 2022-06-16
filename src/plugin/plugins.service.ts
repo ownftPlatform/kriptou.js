@@ -3,8 +3,8 @@
  * Copyright (c) 2022 Wen Moon Market
  **************************/
 
-import { NftPluginService } from './nft-plugin.service';
-import { WyvernPluginService } from './wyvern-plugin.service';
+import { NftPluginService } from './nft/nft-plugin.service';
+import { WyvernPluginService } from './wyvern-protocol/wyvern-plugin.service';
 import { logUtil } from '../util/log-util';
 import { Kriptou } from '../index';
 
