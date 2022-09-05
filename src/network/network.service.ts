@@ -8,36 +8,7 @@ import { Subject } from 'rxjs';
 import { logUtil } from '../util/log-util';
 import { KriptouEventInternal } from '../event/event.service';
 
-declare let window: any;
-
-export enum KriptouNetworkTypeInternal {
-    Main = 1,
-    Ropsten = 3,
-    Rinkeby = 4,
-    ArbitrumOne = 42161,
-    ArbitrumRinkeby = 421611,
-    PulsechainTest = 940
-}
-
-const networks: Record<KriptouNetworkTypeInternal, Kriptou.Types.Network> = {
-    [KriptouNetworkTypeInternal.Main]: { chainId: KriptouNetworkTypeInternal.Main, name: 'Main' },
-    [KriptouNetworkTypeInternal.Ropsten]: { chainId: KriptouNetworkTypeInternal.Ropsten, name: 'Ropsten Testnet' },
-    [KriptouNetworkTypeInternal.Rinkeby]: { chainId: KriptouNetworkTypeInternal.Rinkeby, name: 'Rinkeby Testnet' },
-    [KriptouNetworkTypeInternal.ArbitrumOne]: { chainId: KriptouNetworkTypeInternal.ArbitrumOne, name: 'Arbitrum One' },
-    [KriptouNetworkTypeInternal.ArbitrumRinkeby]: {
-        chainId: KriptouNetworkTypeInternal.ArbitrumRinkeby,
-        name: 'Arbitrum Rinkeby'
-    },
-    [KriptouNetworkTypeInternal.PulsechainTest]: {
-        chainId: KriptouNetworkTypeInternal.PulsechainTest,
-        name: 'PulseChain Testnet'
-    }
-};
-
-export interface KriptouNetworkInternal {
-    name: string;
-    chainId: number;
-}
+export const networks = require('./evm-chains.json');
 
 const logger = logUtil.getLogger('NetworkService');
 
@@ -53,9 +24,11 @@ export class NetworkService {
     }
 
     public setChainIdDecimal(chainId: number): void {
-        this.network = networks[chainId];
+        this.network = networks.find((network) => network.chainId === chainId);
         if (this.network === undefined) {
-            logger.warn('ChainId not supported: ' + chainId);
+            logger.warn('ChainId not supported by library: ' + chainId);
+        } else if (!Kriptou.Config.current().validateNetwork(false)) {
+            logger.warn('ChainId supported by library but not your app: ' + chainId);
         }
 
         this.rxNetworkUpdated.next(this.network);
@@ -69,14 +42,12 @@ export class NetworkService {
     }
 
     public async switch(): Promise<void> {
-        if (window === undefined || window.provider === undefined) {
+        if (globalThis === undefined || globalThis.provider === undefined) {
             return Promise.reject(new Error('Network switching - window.provider does not exist'));
         }
 
         try {
-            await window.provider.send('wallet_switchEthereumChain', [
-                { chainId: `0x${KriptouNetworkTypeInternal.ArbitrumRinkeby.toString(16)}` }
-            ]);
+            await globalThis.provider.send('wallet_switchEthereumChain', [{ chainId: `0x${Number(421611).toString(16)}` }]);
             logger.debug('You have succefully switched to Binance Test network');
         } catch (switchError) {
             // This error code indicates that the chain has not been added to MetaMask.
@@ -89,14 +60,14 @@ export class NetworkService {
     }
 
     private async addNetwork(): Promise<void> {
-        if (window === undefined || window.provider === undefined) {
+        if (globalThis === undefined || globalThis.provider === undefined) {
             return Promise.reject(new Error('Network switching - window.provider does not exist'));
         }
 
         try {
-            await window.provider.send('wallet_addEthereumChain', [
+            await globalThis.provider.send('wallet_addEthereumChain', [
                 {
-                    chainId: `0x${KriptouNetworkTypeInternal.ArbitrumRinkeby.toString(16)}`,
+                    chainId: `0x${Number(421611).toString(16)}`,
                     chainName: 'Arbitrum Rinkeby',
                     rpcUrls: ['https://rinkeby.arbitrum.io/rpc'],
                     blockExplorerUrls: ['https://testnet.arbiscan.io/#'],
