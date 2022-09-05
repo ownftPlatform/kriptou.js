@@ -1,3 +1,9 @@
+# 0.0.42 (2022-09-05)
+
+### Features
+
+* feat(chains): Refactored the network/chains types and how they are loaded (included a network file with current EVM chains supported). (kr1p70n1c) ([`f281941`](https://github.com/kr1p70n1c/kriptou.js/commit/f281941589df85500286a82c9d40ec7538e0dafd))
+
 # 0.0.37 (2022-06-16)
 
 ### Features
@@ -7,6 +13,7 @@
 
 ### Documentation
 
+* docs(changelog): `CHANGELOG` for `0.0.37` release. (kr1p70n1c) ([`3036345`](https://github.com/kr1p70n1c/kriptou.js/commit/3036345d4bb5eb385ad27633ddf58b88826ba84e))
 * docs(wyvern-plugin): Added link to the `Wyvern` plugin document from the main `README`. (kr1p70n1c) ([`e3fe874`](https://github.com/kr1p70n1c/kriptou.js/commit/e3fe8748ba7e90856f5421ab6ed21f1de55ce844))
 
 ### Chore
