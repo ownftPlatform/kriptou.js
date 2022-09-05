@@ -2,7 +2,6 @@
 
 ### Features
 
-* Merge pull request #4 from kr1p70n1c/feature/chains-refactor (kr1p70n1c) ([`83d56f4`](https://github.com/kr1p70n1c/kriptou.js/commit/83d56f45f7a66695bb0af0c5db4891b25f730711))
 * feat(chains): Refactored the network/chains types and how they are loaded (included a network file with current EVM chains supported). (kr1p70n1c) ([`f281941`](https://github.com/kr1p70n1c/kriptou.js/commit/f281941589df85500286a82c9d40ec7538e0dafd))
 
 # 0.0.37 (2022-06-16)
