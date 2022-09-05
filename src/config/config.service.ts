@@ -101,14 +101,19 @@ export class ConfigService {
         this.networkChangeReloadEnabled = false;
     }
 
-    public async validateNetwork(): Promise<boolean> {
+    public async validateNetwork(invokeHandlers: boolean = true): Promise<boolean> {
         const isWalletNotConnected: boolean = await ConfigService.isWalletNotConnected();
-        if (isWalletNotConnected) {
+        if (isWalletNotConnected && invokeHandlers) {
             this.config.chain.walletNotConnectedHandler();
             return false;
         }
 
-        if (!this.isCurrentChainValid()) {
+        if (!this.isCurrentChainValid() && invokeHandlers) {
+            logger.warn(
+                `validateNetwork - current network not supported [ CurrentNetwork : ${
+                    Kriptou.Network.currentNetwork().chainId
+                }, SupportedNetworks : ${this.config.chain.supportedChains.toString()} ]`
+            );
             this.config.chain.chainCheckFailedHandler();
             return false;
         }
