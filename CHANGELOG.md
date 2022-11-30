@@ -1,8 +1,34 @@
+# 0.0.56 (2022-11-30)
+
+### Features
+
+* feat(latest-updates): Removed all things `wyvern protocol` again. (kr1p70n1c) ([`a23a1b4`](https://github.com/kr1p70n1c/kriptou.js/commit/a23a1b47af8e349216ad367ef55e4c6577f4c4fa))
+* feat(latest-updates): Latest changes of the past few weeks whilst intergrating with a dapp. (kr1p70n1c) ([`2bb71a9`](https://github.com/kr1p70n1c/kriptou.js/commit/2bb71a9f300e7d0be898223dbcb3bb72af82824d))
+
+### Documentation
+
+* docs(latest-updates): Removed all things `wyvern protocol`. (kr1p70n1c) ([`7b1c09a`](https://github.com/kr1p70n1c/kriptou.js/commit/7b1c09afe9c77b971010bcce63d2f2a369293b4f))
+
+### Chore
+
+* chore(latest-updates): Bumped version and updated packages. (kr1p70n1c) ([`22ff32c`](https://github.com/kr1p70n1c/kriptou.js/commit/22ff32cf37299645d48f5a14ac0b34500ad7e2b9))
+* chore(version): Bumped the version again in order to deploy on `npmjs`. (kr1p70n1c) ([`9da04fc`](https://github.com/kr1p70n1c/kriptou.js/commit/9da04fc6c625e1b03478bc87055e0b31fc36253c))
+
+### Misc (pre semantic commit messages)
+
+* Merge pull request #5 from kr1p70n1c/feature/latest-updates (kr1p70n1c) ([`4810da3`](https://github.com/kr1p70n1c/kriptou.js/commit/4810da3a89defb20fde16150aba6f628f0e8babe))
+
 # 0.0.42 (2022-09-05)
 
 ### Features
 
 * feat(chains): Refactored the network/chains types and how they are loaded (included a network file with current EVM chains supported). (kr1p70n1c) ([`f281941`](https://github.com/kr1p70n1c/kriptou.js/commit/f281941589df85500286a82c9d40ec7538e0dafd))
+* Merge pull request #4 from kr1p70n1c/feature/chains-refactor (kr1p70n1c) ([`83d56f4`](https://github.com/kr1p70n1c/kriptou.js/commit/83d56f45f7a66695bb0af0c5db4891b25f730711))
+
+### Documentation
+
+* docs(changelog): `CHANGELOG` for `0.0.42` release. (kr1p70n1c) ([`a7bba7c`](https://github.com/kr1p70n1c/kriptou.js/commit/a7bba7c81cea1594e11972138676a7762ed52696))
+* docs(changelog): Cleanup. (kr1p70n1c) ([`e64336f`](https://github.com/kr1p70n1c/kriptou.js/commit/e64336fdf1f97377fc59415e988fb3f704b3eec5))
 
 # 0.0.37 (2022-06-16)
 
