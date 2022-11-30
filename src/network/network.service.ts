@@ -1,6 +1,6 @@
 /** ***********************
  * MIT
- * Copyright (c) 2022 Wen Moon Market
+ * Copyright (c) 2022 OwNFT Market
  **************************/
 
 import { Kriptou } from '../index';
@@ -41,25 +41,33 @@ export class NetworkService {
         return this.rxNetworkUpdated.subscribe(fn);
     }
 
-    public async switch(): Promise<void> {
+    public async switch(chainId: number): Promise<void> {
         if (globalThis === undefined || globalThis.provider === undefined) {
             return Promise.reject(new Error('Network switching - window.provider does not exist'));
         }
 
+        const network: Kriptou.Types.Network = networks.find((_network) => _network.chainId === chainId);
+        if (network === undefined) {
+            logger.error('EVM chain not found for chainId ' + chainId);
+            return Promise.reject(new Error('EVM chain not found for chainId ' + chainId));
+        }
+
         try {
-            await globalThis.provider.send('wallet_switchEthereumChain', [{ chainId: `0x${Number(421611).toString(16)}` }]);
-            logger.debug('You have succefully switched to Binance Test network');
+            await globalThis.provider.send('wallet_switchEthereumChain', [{ chainId: `0x${Number(chainId).toString(16)}` }]);
+            logger.debug('You have succesfully switched to ' + network.name);
+            return Promise.resolve();
         } catch (switchError) {
             // This error code indicates that the chain has not been added to MetaMask.
-            if (switchError.code === 4902) {
+            if (switchError.code === 4902 || switchError.code === -32603) {
                 logger.warn('This network is not available in your metamask, please add it', switchError);
-                return this.addNetwork();
+                return this.addNetwork(network);
             }
             logger.error('Failed to switch to the network:', switchError);
+            return Promise.reject(switchError);
         }
     }
 
-    private async addNetwork(): Promise<void> {
+    private async addNetwork(network: Kriptou.Types.Network): Promise<void> {
         if (globalThis === undefined || globalThis.provider === undefined) {
             return Promise.reject(new Error('Network switching - window.provider does not exist'));
         }
@@ -67,19 +75,21 @@ export class NetworkService {
         try {
             await globalThis.provider.send('wallet_addEthereumChain', [
                 {
-                    chainId: `0x${Number(421611).toString(16)}`,
-                    chainName: 'Arbitrum Rinkeby',
-                    rpcUrls: ['https://rinkeby.arbitrum.io/rpc'],
-                    blockExplorerUrls: ['https://testnet.arbiscan.io/#'],
+                    chainId: `0x${Number(network.chainId).toString(16)}`,
+                    chainName: network.name,
+                    rpcUrls: [network.rpc[0]],
+                    blockExplorerUrls: [network.explorers[0].url],
                     nativeCurrency: {
-                        symbol: 'ARETH',
-                        decimals: 18
+                        symbol: network.nativeCurrency.symbol,
+                        decimals: network.nativeCurrency.decimals
                     }
                 }
             ]);
             logger.debug('You have succefully added the network');
+            return Promise.resolve();
         } catch (switchError) {
-            logger.error('Failed to switch to the network:', switchError);
+            logger.error('Failed to add the network:', switchError);
+            return Promise.reject(switchError);
         }
     }
 }
