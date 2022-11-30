@@ -1,6 +1,6 @@
 /** ***********************
  * MIT
- * Copyright (c) 2022 Wen Moon Market
+ * Copyright (c) 2022 OwNFT Market
  **************************/
 
 import { Kriptou } from '../index';
@@ -64,18 +64,6 @@ export interface KriptouConfigInternal {
          * page-reload in the handler if this behaviour is required.
          */
         changeHandler?: (accounts: Array<string>) => void;
-    };
-
-    /**
-     * Wyvern Protocol configuration.
-     *
-     * @deprecated Not going to support the Wyvern Protocol in this SDK anymore.
-     */
-    wyvernProtocol?: {
-        /**
-         * The address of the deployed exchange.
-         */
-        exchangeAddress: string;
     };
 }
 

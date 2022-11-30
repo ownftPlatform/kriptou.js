@@ -1,6 +1,6 @@
 /** ***********************
  * MIT
- * Copyright (c) 2022 Wen Moon Market
+ * Copyright (c) 2022 OwNFT Market
  **************************/
 
 import { AccountService, KriptouUserInternal } from './account/account.service';
@@ -48,7 +48,7 @@ export namespace Kriptou {
         if (config === undefined) config = new Config(_config);
         if (web3 === undefined) web3 = new Web3(status, network, config);
         if (account === undefined) account = new Account(status, web3, _config);
-        if (plugins === undefined) plugins = new Plugins(_config);
+        if (plugins === undefined) plugins = new Plugins();
         if (_events === undefined) _events = new Events(status, network);
 
         logger.debug('init - done');
@@ -130,10 +130,6 @@ export namespace Kriptou {
         // Need to make new plugins statically available here
         public static nft() {
             return plugins.nft;
-        }
-
-        public static wyvern() {
-            return plugins.wyvern;
         }
     }
 
