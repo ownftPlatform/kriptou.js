@@ -71,9 +71,11 @@ export class AccountService {
                         break;
                     }
                     case StatusValue.ReadyAndUserConnected: {
+                        logger.debug('getUser - StatusValue.ReadyAndUserConnected');
                         return resolve(status.user);
                     }
                     case StatusValue.NoAccountsFound: {
+                        logger.debug('getUser - StatusValue.NoAccountsFound');
                         if (
                             this.config !== undefined &&
                             this.config.chain !== undefined &&
@@ -84,7 +86,12 @@ export class AccountService {
                         }
                         return resolve(undefined);
                     }
+                    case StatusValue.Web3NotSupported: {
+                        logger.debug('getUser - StatusValue.Web3NotSupported');
+                        return resolve(undefined);
+                    }
                     default: {
+                        logger.error('getUser - We should not get here: ', status.status);
                         return reject(new Error('We should not get here??' + status.status));
                     }
                 }
@@ -130,7 +137,7 @@ export class AccountService {
                         this.status.updateStatus(StatusValue.NoAccountsFound);
                     }
                     if (err != null) {
-                        window.alert('Account.Service :: getAccount :: error retrieving account');
+                        globalThis.alert('Account.Service :: getAccount :: error retrieving account');
 
                         reject(new Error('Error retrieving account'));
                     }

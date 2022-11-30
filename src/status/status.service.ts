@@ -12,7 +12,8 @@ export enum StatusValue {
     NotReady,
     ReadyAndUserConnected,
     ReadyAndUserNotConnected,
-    NoAccountsFound
+    NoAccountsFound,
+    Web3NotSupported
 }
 
 const logger = logUtil.getLogger('StatusService');

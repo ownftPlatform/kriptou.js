@@ -15,6 +15,17 @@ export interface KriptouConfigInternal {
     };
 
     /**
+     * Browser configuration.
+     */
+    browser?: {
+        /**
+         * Handler for the Web3 Support Check that fails.  If this is not configured and the check fails, an
+         * old-fashioned alert will be displayed.
+         */
+        web3SupportCheckFailedHandler?: (chainId?: number) => void;
+    };
+
+    /**
      * Chain/network configuration.
      */
     chain?: {
@@ -22,7 +33,12 @@ export interface KriptouConfigInternal {
         delayValidation?: boolean;
         supportedChains?: Array<number>;
         walletNotConnectedHandler?: () => void;
-        chainCheckFailedHandler?: () => void;
+
+        /**
+         * Handler for the Chain Check that fails.  When the <code>chainId</code> is provided it means the chain is
+         * actually supported but it is not currently the selected network.
+         */
+        chainCheckFailedHandler?: (chainId?: number) => void;
 
         /**
          * Whether the page reloads when the chain/network has changed.
@@ -52,6 +68,8 @@ export interface KriptouConfigInternal {
 
     /**
      * Wyvern Protocol configuration.
+     *
+     * @deprecated Not going to support the Wyvern Protocol in this SDK anymore.
      */
     wyvernProtocol?: {
         /**
@@ -101,22 +119,44 @@ export class ConfigService {
         this.networkChangeReloadEnabled = false;
     }
 
-    public async validateNetwork(invokeHandlers: boolean = true): Promise<boolean> {
+    public async validateNetwork(invokeHandlers: boolean = true, chainId?: number): Promise<boolean> {
         const isWalletNotConnected: boolean = await ConfigService.isWalletNotConnected();
-        if (isWalletNotConnected && invokeHandlers) {
-            this.config.chain.walletNotConnectedHandler();
+        if (isWalletNotConnected) {
+            logger.warn('validateNetwork - wallet is not connected');
+            if (invokeHandlers) this.config.chain.walletNotConnectedHandler();
             return false;
         }
 
-        if (!this.isCurrentChainValid() && invokeHandlers) {
+        if (chainId !== undefined) {
+            if (!this.isChainValid(chainId)) {
+                logger.warn(
+                    `validateNetwork - provided chainId not supported [ ChainId : ${chainId}, SupportedNetworks : ${this.config.chain.supportedChains.toString()} ]`
+                );
+                if (invokeHandlers) this.config.chain.chainCheckFailedHandler();
+                return false;
+            } else if (Kriptou.Network.currentNetwork().chainId !== chainId) {
+                logger.warn(
+                    `validateNetwork - provided chainId is supported but is not equal to current selected network [ ChainId : ${chainId}, CurrentNetwork : ${
+                        Kriptou.Network.currentNetwork().chainId
+                    }, SupportedNetworks : ${this.config.chain.supportedChains.toString()} ]`
+                );
+                if (invokeHandlers) this.config.chain.chainCheckFailedHandler(chainId);
+                return false;
+            }
+            // Network is valid
+            return true;
+        }
+
+        if (!this.isChainValid(Kriptou.Network.currentNetwork().chainId)) {
             logger.warn(
-                `validateNetwork - current network not supported [ CurrentNetwork : ${
+                `validateNetwork - current selected network not supported [ CurrentNetwork : ${
                     Kriptou.Network.currentNetwork().chainId
                 }, SupportedNetworks : ${this.config.chain.supportedChains.toString()} ]`
             );
-            this.config.chain.chainCheckFailedHandler();
+            if (invokeHandlers) this.config.chain.chainCheckFailedHandler();
             return false;
         }
+        // Network is valid
         return true;
     }
 
@@ -125,7 +165,7 @@ export class ConfigService {
         return Kriptou.User.currentPromise(false).then((value) => value === undefined);
     }
 
-    private isCurrentChainValid(): boolean {
+    private isChainValid(chainId: number | undefined): boolean {
         if (this.config === undefined) {
             return true;
         }
@@ -134,11 +174,11 @@ export class ConfigService {
             return true;
         }
 
-        if (Kriptou.Network.currentNetwork() === undefined) {
-            logger.warn('isCurrentChainValid - Kriptou.Network.currentNetwork() === undefined');
+        if (chainId === undefined) {
+            logger.warn('isChainValid - chainId === undefined');
             return false;
         }
 
-        return !!this.config.chain.supportedChains.find((value) => value === Kriptou.Network.currentNetwork().chainId);
+        return !!this.config.chain.supportedChains.find((value) => value === chainId);
     }
 }

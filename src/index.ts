@@ -46,7 +46,7 @@ export namespace Kriptou {
         if (status === undefined) status = new Status();
         if (network === undefined) network = new Network();
         if (config === undefined) config = new Config(_config);
-        if (web3 === undefined) web3 = new Web3(network, config);
+        if (web3 === undefined) web3 = new Web3(status, network, config);
         if (account === undefined) account = new Account(status, web3, _config);
         if (plugins === undefined) plugins = new Plugins(_config);
         if (_events === undefined) _events = new Events(status, network);
@@ -143,14 +143,31 @@ export namespace Kriptou {
         }
 
         /**
-         * Returns whether the current selected network is valid and also executes a lambda based on the library's configuration.
+         * <p>
+         * When no <code>chainId</code> argument provided:
+         * <p>
+         * Returns whether the current selected network is valid (ie. configured with the <code>Kriptou.init</code> setup)
+         * and also executes a lambda based on the library's configuration.
+         *
+         * <p>
+         * When <code>chainId</code> argument provided:
+         * <p>
+         * Returns whether the provided network is valid (ie. configured with the <code>Kriptou.init</code> setup) and
+         * is also equals to the current selected network and also executes a lambda based on the library's configuration.
          */
-        public static validateNetwork(): Promise<boolean> {
-            return config.validateNetwork();
+        public static validateNetwork(chainId?: number): Promise<boolean> {
+            return config.validateNetwork(true, chainId);
         }
 
-        public static switchNetwork(): void {
-            network.switch().then(() => logger.debug('switchNetwork - done'));
+        /**
+         * <p>
+         * Switches to a specific network.
+         *
+         * <p>
+         * Returns a <code>Promise</code> with the outcome.
+         */
+        public static switchNetwork(chainId: number): Promise<void> {
+            return network.switch(chainId);
         }
     }
 

@@ -6,11 +6,12 @@
 import { ReplaySubject } from 'rxjs';
 import { ethers } from 'ethers';
 import { ContractService } from '../contract/contract.service';
-import { NetworkService } from '../network/network.service';
+import { NetworkService } from '../network';
 import { logUtil } from '../util/log-util';
 import { ConfigService } from '../config/config.service';
 import { Kriptou } from '../index';
 import { isBrowser } from '../util/common';
+import { StatusValue } from '../status/status.service';
 
 const web3 = require('web3');
 
@@ -32,14 +33,23 @@ export class Web3Service {
     private enable: any;
     public rxWeb3: ReplaySubject<any> = new ReplaySubject();
 
-    constructor(private readonly networkService: NetworkService, private configService?: ConfigService) {
+    constructor(
+        private status: Kriptou.Status,
+        private readonly networkService: NetworkService,
+        private configService?: ConfigService
+    ) {
         logger.debug('ctor');
         this.initWeb3();
     }
 
     private initWeb3(): void {
         if (globalThis.ethereum === undefined) {
-            if (isBrowser) globalThis.alert('Non-Ethereum browser detected. Install MetaMask');
+            if (isBrowser) {
+                if (this.configService.config.browser && this.configService.config.browser.web3SupportCheckFailedHandler)
+                    this.configService.config.browser.web3SupportCheckFailedHandler();
+                else globalThis.alert('Non-Ethereum browser detected. Install MetaMask');
+            }
+            this.status.updateStatus(StatusValue.Web3NotSupported);
         } else {
             this.setupEvents(globalThis.ethereum);
             this.web3 =
@@ -63,14 +73,19 @@ export class Web3Service {
 
     private async enableMetaMaskAccount(): Promise<any> {
         if (globalThis.ethereum === undefined) {
-            if (isBrowser) globalThis.alert('Non-Ethereum browser detected. Install MetaMask');
-            return;
+            if (isBrowser) {
+                if (this.configService.config.browser && this.configService.config.browser.web3SupportCheckFailedHandler)
+                    this.configService.config.browser.web3SupportCheckFailedHandler();
+                else globalThis.alert('Non-Ethereum browser detected. Install MetaMask');
+            }
+            this.status.updateStatus(StatusValue.Web3NotSupported);
+        } else {
+            let enable = false;
+            await new Promise((_resolve, _reject) => {
+                enable = globalThis.ethereum.enable();
+            });
+            return Promise.resolve(enable);
         }
-        let enable = false;
-        await new Promise((_resolve, _reject) => {
-            enable = globalThis.ethereum.enable();
-        });
-        return Promise.resolve(enable);
     }
 
     private setupEvents(ethereum: any): void {
