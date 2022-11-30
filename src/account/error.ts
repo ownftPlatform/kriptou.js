@@ -1,6 +1,6 @@
 /** ***********************
  * MIT
- * Copyright (c) 2022 Wen Moon Market
+ * Copyright (c) 2022 OwNFT Market
  **************************/
 
 export class AccountsNotFoundError extends Error {

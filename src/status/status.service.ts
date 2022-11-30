@@ -1,6 +1,6 @@
 /** ***********************
  * MIT
- * Copyright (c) 2022 Wen Moon Market
+ * Copyright (c) 2022 OwNFT Market
  **************************/
 
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -12,7 +12,8 @@ export enum StatusValue {
     NotReady,
     ReadyAndUserConnected,
     ReadyAndUserNotConnected,
-    NoAccountsFound
+    NoAccountsFound,
+    Web3NotSupported
 }
 
 const logger = logUtil.getLogger('StatusService');
