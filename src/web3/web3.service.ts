@@ -61,7 +61,6 @@ export class Web3Service {
             logger.debug('this.web3:', this.web3);
             logger.debug('globalThis.web3:', globalThis.web3);
 
-            // Temp code from here:
             ContractService.BLOCKCHAIN = globalThis.web3.eth;
             this.rxWeb3.next([this.web3, globalThis.web3, globalThis.web3.eth]);
 
