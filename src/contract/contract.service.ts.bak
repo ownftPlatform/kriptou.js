@@ -8,7 +8,7 @@ import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
 import { Contract, PopulatedTransaction } from '@ethersproject/contracts';
 import { AddressZero } from '@ethersproject/constants';
 import { Kriptou } from '../index';
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
+import { BigNumberish } from '@ethersproject/bignumber';
 import { logUtil } from '../util/log-util';
 
 type ContractMethodInvocationParams = Record<string, any>;
@@ -65,35 +65,26 @@ export class ContractService {
         const functionData = functionDataArray[0];
         const stateMutability: string = functionData?.stateMutability;
         const isReadFunction: boolean = stateMutability === 'view' || stateMutability === 'pure';
+        const transactionMethod: string = isReadFunction ? 'call' : 'send';
 
-        const contract: Contract = new Contract(options.contractAddress, options.abi, globalThis.provider);
+        const contract: any = new ContractService.BLOCKCHAIN.Contract(options.abi, options.contractAddress, {
+            from: user.address
+        });
 
         const params: Array<any> =
             options.params !== undefined ? Object.entries(options.params).map((a: [string, any]) => a[1]) : [];
 
-        let result: Promise<any>;
-        if (isReadFunction) {
-            logger.info('invokeContractMethod - read function');
+        const populatedTransaction: PopulatedTransaction = await contract.populateTransaction[options.functionName](...params);
+        logger.info('populatedTransaction:', populatedTransaction);
 
-            result = contract[options.functionName](...params);
-        } else {
-            logger.info('invokeContractMethod - write function');
+        const gas: number = await contract?.methods[options.functionName](...params).estimateGas(
+            options.msgValue !== undefined ? { value: options.msgValue } : {}
+        );
+        logger.info('invokeContractMethod - estimated gas:', gas);
 
-            const populatedTransaction: PopulatedTransaction = await contract.populateTransaction[options.functionName](
-                ...params,
-                options.msgValue !== undefined ? { value: options.msgValue } : {}
-            );
-            logger.info('populatedTransaction:', populatedTransaction);
-
-            const gas: BigNumber = await contract.estimateGas[options.functionName](
-                ...params,
-                options.msgValue !== undefined ? { value: options.msgValue } : {}
-            );
-            logger.info('invokeContractMethod - estimated gas:', gas.toString());
-
-            result = ContractService.getSigner(globalThis.provider, user.address).sendTransaction(populatedTransaction);
-        }
-
+        const result: any = contract?.methods[options.functionName](...params)[transactionMethod](
+            options.msgValue !== undefined ? { value: options.msgValue, gas } : { gas }
+        );
         logger.info('invokeContractMethod - result:', result);
 
         // Returns the underlying Promise as is
