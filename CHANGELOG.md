@@ -1,9 +1,27 @@
+# 0.0.83 (2023-02-17)
+
+### Features
+
+* feat(unlock-metamask): Calling `eth_requestAccounts` now to unlock `MetaMask` when it is locked and improved the handling of the `Promise` response. (kr1p70n1c) ([`2894d19`](https://github.com/kr1p70n1c/kriptou.js/commit/2894d19afc64fdeb54a37c8a1959e586cc8a9b94))
+
+### Chore
+
+* chore(unlock-metamask): Bumped version. (kr1p70n1c) ([`8f697ca`](https://github.com/kr1p70n1c/kriptou.js/commit/8f697ca68725729d23bdbbb3e3a927aaf1cbb384))
+
+### Misc (pre semantic commit messages)
+
+* Merge pull request #7 from kr1p70n1c/feature/unlock-metamask (kr1p70n1c) ([`4e8d7fc`](https://github.com/kr1p70n1c/kriptou.js/commit/4e8d7fc794d1bbcfd74f3751fcddcb00f8f261fd))
+
 # 0.0.82 (2023-02-17)
 
 ### Features
 
 * feat(balance-and-write-transactions): Improved when the balance is retrieved and also using `ethers.js` now for Transactions and not `web3.js` anymore. (kr1p70n1c) ([`b93d0f2`](https://github.com/kr1p70n1c/kriptou.js/commit/b93d0f26daf417807dc8970157e469d417242d7b))
 * feat(balance-and-write-transactions): Added `printEstimatedGas` option. (kr1p70n1c) ([`657f5b7`](https://github.com/kr1p70n1c/kriptou.js/commit/657f5b7a567a95cab291190333269c5e4c0ff280))
+
+### Documentation
+
+* docs(changelog): `CHANGELOG` for `0.0.82` release. (kr1p70n1c) ([`4e90bb5`](https://github.com/kr1p70n1c/kriptou.js/commit/4e90bb582d940ce1e420fba37bbffd802d44be1e))
 
 ### Chore
 
