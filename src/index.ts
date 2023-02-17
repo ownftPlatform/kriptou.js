@@ -110,9 +110,21 @@ export namespace Kriptou {
             logger.debug('User :: current - user:', user);
             return user;
         }
-        public static currentPromise(performWalletNotConnectedHandler: boolean = true): Promise<Kriptou.Types.User> {
+        public static currentPromise(performWalletNotConnectedHandler: boolean = true): Promise<Kriptou.Types.User | undefined> {
             logger.debug('User :: currentPromise - user:', user);
-            return account.getUser(performWalletNotConnectedHandler);
+
+            if (account) return account.getUser(performWalletNotConnectedHandler);
+
+            logger.error('User::currentPromise account is not defined:', account);
+            return Promise.resolve(undefined);
+        }
+        public static currentWithBalancePromise(): Promise<Kriptou.Types.User | undefined> {
+            logger.debug('User :: currentWithBalancePromise - user:', user);
+
+            if (account) return account.getUserBalance();
+
+            logger.error('User::currentWithBalancePromise account is not defined:', account);
+            return Promise.resolve(undefined);
         }
         public static set(_user: any) {
             logger.debug('User :: set - user:', _user);

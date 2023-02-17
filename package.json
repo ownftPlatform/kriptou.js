@@ -1,6 +1,6 @@
 {
   "name": "kriptou.js",
-  "version": "0.0.56",
+  "version": "0.0.82",
   "description": "Another kriptou (crypto) SDK",
   "repository": {
     "type": "git",
@@ -35,30 +35,30 @@
     "@ethersproject/experimental": "5.7.0",
     "@ethersproject/providers": "5.7.2",
     "ethers": "5.7.2",
-    "rxjs": "7.5.7",
-    "web3": "1.8.1",
-    "web3-utils": "1.8.1"
+    "rxjs": "7.8.0",
+    "web3": "1.8.2",
+    "web3-utils": "1.8.2"
   },
   "devDependencies": {
-    "@types/node": "16.18.3",
-    "@typescript-eslint/eslint-plugin": "5.45.0",
-    "@typescript-eslint/parser": "5.45.0",
+    "@types/node": "16.18.12",
+    "@typescript-eslint/eslint-plugin": "5.52.0",
+    "@typescript-eslint/parser": "5.52.0",
     "changelog-auto": "2.3.0",
-    "eslint": "8.28.0",
-    "eslint-config-prettier": "8.5.0",
+    "eslint": "8.34.0",
+    "eslint-config-prettier": "8.6.0",
     "eslint-config-standard": "17.0.0",
     "eslint-plugin-etc": "2.0.2",
     "eslint-plugin-header": "3.1.1",
-    "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jsdoc": "39.6.4",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-jsdoc": "40.0.0",
     "eslint-plugin-no-null": "1.0.2",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-promise": "6.1.1",
-    "eslint-plugin-sonarjs": "0.16.0",
-    "eslint-plugin-unicorn": "45.0.1",
-    "prettier": "2.8.0",
-    "rimraf": "3.0.2",
-    "typescript": "4.9.3"
+    "eslint-plugin-sonarjs": "0.18.0",
+    "eslint-plugin-unicorn": "45.0.2",
+    "prettier": "2.8.4",
+    "rimraf": "4.1.2",
+    "typescript": "4.9.5"
   }
 }

@@ -27,20 +27,21 @@ export class AccountService {
     private rxAccount: BehaviorSubject<any> = new BehaviorSubject(undefined);
 
     private readonly web3Service: Web3Service;
-    private account: any;
+    private account: string; // Wallet address
     private blockchain: any;
 
+    // eslint-disable-next-line max-lines-per-function
     constructor(private status: Kriptou.Status, web3: Kriptou.Web3, private config?: Kriptou.Types.Config) {
         logger.debug('ctor');
         this.web3Service = web3;
         this.web3Service.rxWeb3.subscribe((result: any) => {
             this.blockchain = result[2];
-            this.getUserBalance()
-                .then((retAccount: any) => {
+            this.getAccount()
+                .then((retAccount: string) => {
                     this.user = {
-                        address: retAccount.account,
-                        balanceWei: retAccount.balance,
-                        balanceEth: parseInt(Web3Utils.fromWei(retAccount.balance), 10)
+                        address: retAccount,
+                        balanceWei: '0',
+                        balanceEth: parseInt(Web3Utils.fromWei('0'), 10)
                     };
 
                     window.userAddress = this.user.address;
@@ -99,19 +100,22 @@ export class AccountService {
         });
     }
 
-    private async getUserBalance(): Promise<any> {
+    public async getUserBalance(): Promise<Kriptou.Types.User> {
         const account = await this.getAccount();
         logger.debug('getUserBalance - account:', account);
         return new Promise((resolve, reject) => {
             this.blockchain.getBalance(account, (err: any, balance: any) => {
                 logger.debug('getUserBalance - balance:', balance);
                 if (!err) {
-                    const retVal = {
-                        account,
-                        balance
+                    // Update the in-memory user object as well with the latest balance
+                    this.user = {
+                        address: account,
+                        balanceWei: balance,
+                        balanceEth: parseInt(Web3Utils.fromWei(balance), 10)
                     };
-                    logger.info('getUserBalance :: getBalance - retVal:', retVal);
-                    resolve(retVal);
+
+                    logger.info('getUserBalance :: getBalance - this.user:', this.user);
+                    resolve(this.user);
                 } else {
                     reject(new Error("{ account: 'error', balance: 0 }"));
                 }
@@ -119,14 +123,12 @@ export class AccountService {
         });
     }
 
-    private async getAccount(): Promise<any> {
+    private async getAccount(): Promise<string> {
         logger.debug('getAccount - init');
         if (this.account == null) {
-            this.account = (await new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 logger.debug('getAccount - this.blockchain:', this.blockchain);
-                // eslint-disable-next-line etc/no-commented-out-code
-                // this.status.updateStatus(StatusValue.ReadyAndUserNotConnected, this.user);
-                this.blockchain.getAccounts((err: any, retAccounts: any) => {
+                this.blockchain.getAccounts((err: any, retAccounts: Array<string>) => {
                     logger.info('getAccount - retAccounts:', retAccounts);
                     if (retAccounts.length > 0) {
                         this.account = retAccounts[0];
@@ -142,7 +144,7 @@ export class AccountService {
                         reject(new Error('Error retrieving account'));
                     }
                 });
-            })) as Promise<any>;
+            });
         }
         return Promise.resolve(this.account);
     }
