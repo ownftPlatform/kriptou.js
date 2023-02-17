@@ -59,10 +59,6 @@ export class AccountService {
         });
     }
 
-    public connectWallet(): void {
-        this.web3Service.connectWallet();
-    }
-
     public getUser(performWalletNotConnectedHandler: boolean = true): Promise<Kriptou.Types.User> {
         return new Promise((resolve, reject) => {
             this.status.addStatusUpdatedSubscription(undefined, (status: { status: StatusValue; user: any }) => {
