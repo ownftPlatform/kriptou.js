@@ -91,9 +91,17 @@ export namespace Kriptou {
     }
 
     export class Web3 extends Web3Service {
-        public static authenticate() {
-            web3.connectWallet();
+        /**
+         * <p>
+         * Returns array of accounts.
+         *
+         * <p>
+         * If the wallet is locked this should open it to be unlocked.
+         */
+        public static authenticate(): Promise<Array<string>> {
+            return web3.connectWallet();
         }
+
         public static provider(): JsonRpcProvider {
             return globalThis.provider;
         }

@@ -30,7 +30,6 @@ const logger = logUtil.getLogger('Web3Service');
 
 export class Web3Service {
     private web3: any;
-    private enable: any;
     public rxWeb3: ReplaySubject<any> = new ReplaySubject();
 
     constructor(
@@ -72,7 +71,7 @@ export class Web3Service {
         }
     }
 
-    private async enableMetaMaskAccount(): Promise<any> {
+    private async getAccounts(): Promise<Array<string>> {
         if (globalThis.ethereum === undefined) {
             if (isBrowser) {
                 if (this.configService.config.browser && this.configService.config.browser.web3SupportCheckFailedHandler)
@@ -80,12 +79,9 @@ export class Web3Service {
                 else globalThis.alert('Non-Ethereum browser detected. Install MetaMask');
             }
             this.status.updateStatus(StatusValue.Web3NotSupported);
+            return Promise.resolve([]);
         } else {
-            let enable = false;
-            await new Promise((_resolve, _reject) => {
-                enable = globalThis.ethereum.enable();
-            });
-            return Promise.resolve(enable);
+            return globalThis.ethereum.request({ method: 'eth_requestAccounts' });
         }
     }
 
@@ -129,8 +125,12 @@ export class Web3Service {
         });
     }
 
-    public connectWallet(): void {
-        this.enable = this.enableMetaMaskAccount();
+    /**
+     * <p>
+     * Returns array of accounts.
+     */
+    public connectWallet(): Promise<Array<string>> {
+        return this.getAccounts();
     }
 
     /**
