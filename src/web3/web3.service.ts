@@ -54,19 +54,20 @@ export class Web3Service {
             this.setupEvents(globalThis.ethereum);
             this.web3 =
                 typeof globalThis.web3 !== 'undefined'
-                    ? globalThis.web3.currentProvider
+                    ? globalThis.ethereum
                     : new web3.providers.HttpProvider('http://localhost:8545');
             globalThis.web3 = new web3(globalThis.ethereum);
             globalThis.provider = new ethers.providers.Web3Provider(globalThis.ethereum);
             logger.debug('this.web3:', this.web3);
             logger.debug('globalThis.web3:', globalThis.web3);
 
+            ContractService.BLOCKCHAIN = globalThis.web3.eth;
+            this.rxWeb3.next([this.web3, globalThis.web3, globalThis.web3.eth]);
+
             globalThis.web3.eth.getChainId().then((chainId: number) => {
                 logger.info('initWeb3 - chainId:', chainId);
                 globalThis.chainId = chainId;
                 this.networkService.setChainIdDecimal(chainId);
-                ContractService.BLOCKCHAIN = globalThis.web3.eth;
-                this.rxWeb3.next([this.web3, globalThis.web3, globalThis.web3.eth]);
             });
         }
     }
