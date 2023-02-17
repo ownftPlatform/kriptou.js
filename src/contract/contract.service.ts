@@ -19,6 +19,7 @@ export interface KriptouContractMethodInvocationOptionsInternal {
     abi: any;
     params?: ContractMethodInvocationParams;
     msgValue?: BigNumberish;
+    printEstimatedGas?: boolean;
 }
 
 const logger = logUtil.getLogger('ContractService');
@@ -79,17 +80,19 @@ export class ContractService {
         } else {
             logger.info('invokeContractMethod - write function');
 
+            if (options.printEstimatedGas) {
+                const gas: BigNumber = await contract.estimateGas[options.functionName](
+                    ...params,
+                    options.msgValue !== undefined ? { value: options.msgValue } : {}
+                );
+                logger.info('invokeContractMethod - estimated gas:', gas.toString());
+            }
+
             const populatedTransaction: PopulatedTransaction = await contract.populateTransaction[options.functionName](
                 ...params,
                 options.msgValue !== undefined ? { value: options.msgValue } : {}
             );
             logger.info('populatedTransaction:', populatedTransaction);
-
-            const gas: BigNumber = await contract.estimateGas[options.functionName](
-                ...params,
-                options.msgValue !== undefined ? { value: options.msgValue } : {}
-            );
-            logger.info('invokeContractMethod - estimated gas:', gas.toString());
 
             result = ContractService.getSigner(globalThis.provider, user.address).sendTransaction(populatedTransaction);
         }
