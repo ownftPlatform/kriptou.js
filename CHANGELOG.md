@@ -1,3 +1,21 @@
+# 0.0.82 (2023-02-17)
+
+### Features
+
+* feat(balance-and-write-transactions): Improved when the balance is retrieved and also using `ethers.js` now for Transactions and not `web3.js` anymore. (kr1p70n1c) ([`b93d0f2`](https://github.com/kr1p70n1c/kriptou.js/commit/b93d0f26daf417807dc8970157e469d417242d7b))
+* feat(balance-and-write-transactions): Added `printEstimatedGas` option. (kr1p70n1c) ([`657f5b7`](https://github.com/kr1p70n1c/kriptou.js/commit/657f5b7a567a95cab291190333269c5e4c0ff280))
+
+### Chore
+
+* chore(balance-and-write-transactions): Updated pkg versions. (kr1p70n1c) ([`caad8d0`](https://github.com/kr1p70n1c/kriptou.js/commit/caad8d0d8b90b10926a6fef6f6761da61771f25c))
+* chore(improvements): Bumped version. (kr1p70n1c) ([`cca4407`](https://github.com/kr1p70n1c/kriptou.js/commit/cca4407fd62bc27c440f51b2e73783c4b0a5ae98))
+* chore(balance-and-write-transactions): Bumped the `nodejs` version. (kr1p70n1c) ([`8766e2d`](https://github.com/kr1p70n1c/kriptou.js/commit/8766e2de9c5e3318672b365ef4f837c39cec7622))
+* chore(balance-and-write-transactions): Removed redundant comment. (kr1p70n1c) ([`fda960d`](https://github.com/kr1p70n1c/kriptou.js/commit/fda960db1577c903b272bab3973d9bdd8200fce6))
+
+### Misc (pre semantic commit messages)
+
+* Merge pull request #6 from kr1p70n1c/feature/improvements (kr1p70n1c) ([`c4d62ca`](https://github.com/kr1p70n1c/kriptou.js/commit/c4d62cae664ebd5679667cb42561ddbcd755873b))
+
 # 0.0.56 (2022-11-30)
 
 ### Features
@@ -7,6 +25,7 @@
 
 ### Documentation
 
+* docs(changelog): `CHANGELOG` for `0.0.56` release. (kr1p70n1c) ([`ab1ac65`](https://github.com/kr1p70n1c/kriptou.js/commit/ab1ac654cdfa74b891a24aa5fd2d321862d9bd02))
 * docs(latest-updates): Removed all things `wyvern protocol`. (kr1p70n1c) ([`7b1c09a`](https://github.com/kr1p70n1c/kriptou.js/commit/7b1c09afe9c77b971010bcce63d2f2a369293b4f))
 
 ### Chore
