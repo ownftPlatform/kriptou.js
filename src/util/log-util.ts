@@ -1,6 +1,6 @@
 /** ***********************
  * MIT
- * Copyright (c) 2022 OwNFT Market
+ * Copyright (c) 2022 ownft Platform
  **************************/
 
 export type LogTypes = 'debug' | 'all' | 'info' | 'warn' | 'error' | 'fatal' | 'off';

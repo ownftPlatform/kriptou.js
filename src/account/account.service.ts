@@ -1,6 +1,6 @@
 /** ***********************
  * MIT
- * Copyright (c) 2022 OwNFT Market
+ * Copyright (c) 2022 ownft Platform
  **************************/
 
 import { BehaviorSubject } from 'rxjs';
@@ -31,7 +31,11 @@ export class AccountService {
     private blockchain: any;
 
     // eslint-disable-next-line max-lines-per-function
-    constructor(private status: Kriptou.Status, web3: Kriptou.Web3, private config?: Kriptou.Types.Config) {
+    constructor(
+        private status: Kriptou.Status,
+        web3: Kriptou.Web3,
+        private config?: Kriptou.Types.Config
+    ) {
         logger.debug('ctor');
         this.web3Service = web3;
         this.web3Service.rxWeb3.subscribe((result: any) => {
@@ -41,7 +45,7 @@ export class AccountService {
                     this.user = {
                         address: retAccount,
                         balanceWei: '0',
-                        balanceEth: parseInt(Web3Utils.fromWei('0'), 10)
+                        balanceEth: parseInt(Web3Utils.fromWei('0', 'ether'), 10)
                     };
 
                     window.userAddress = this.user.address;
@@ -107,7 +111,7 @@ export class AccountService {
                     this.user = {
                         address: account,
                         balanceWei: balance,
-                        balanceEth: parseInt(Web3Utils.fromWei(balance), 10)
+                        balanceEth: parseInt(Web3Utils.fromWei(balance, 'ether'), 10)
                     };
 
                     logger.info('getUserBalance :: getBalance - this.user:', this.user);
