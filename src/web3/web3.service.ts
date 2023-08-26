@@ -1,6 +1,6 @@
 /** ***********************
  * MIT
- * Copyright (c) 2022 OwNFT Market
+ * Copyright (c) 2022 ownft Platform
  **************************/
 
 import { ReplaySubject } from 'rxjs';

@@ -1,6 +1,6 @@
 /** ***********************
  * MIT
- * Copyright (c) 2022 OwNFT Market
+ * Copyright (c) 2022 ownft Platform
  **************************/
 
 import { getAddress } from '@ethersproject/address';
@@ -20,6 +20,7 @@ export interface KriptouContractMethodInvocationOptionsInternal {
     params?: ContractMethodInvocationParams;
     msgValue?: BigNumberish;
     printEstimatedGas?: boolean;
+    sendCall?: boolean;
 }
 
 const logger = logUtil.getLogger('ContractService');
@@ -71,6 +72,7 @@ export class ContractService {
 
         const params: Array<any> =
             options.params !== undefined ? Object.entries(options.params).map((a: [string, any]) => a[1]) : [];
+        logger.debug('invokeContractMethod - params:', params);
 
         let result: Promise<any>;
         if (isReadFunction) {
@@ -81,11 +83,12 @@ export class ContractService {
             logger.info('invokeContractMethod - write function');
 
             if (options.printEstimatedGas) {
+                logger.info('invokeContractMethod - estimated gas begin');
                 const gas: BigNumber = await contract.estimateGas[options.functionName](
                     ...params,
                     options.msgValue !== undefined ? { value: options.msgValue } : {}
                 );
-                logger.info('invokeContractMethod - estimated gas:', gas.toString());
+                logger.info('invokeContractMethod - estimated gas done:', gas.toString());
             }
 
             const populatedTransaction: PopulatedTransaction = await contract.populateTransaction[options.functionName](
@@ -94,7 +97,9 @@ export class ContractService {
             );
             logger.info('populatedTransaction:', populatedTransaction);
 
-            result = ContractService.getSigner(globalThis.provider, user.address).sendTransaction(populatedTransaction);
+            result = options.sendCall
+                ? ContractService.getSigner(globalThis.provider, user.address).call(populatedTransaction)
+                : ContractService.getSigner(globalThis.provider, user.address).sendTransaction(populatedTransaction);
         }
 
         logger.info('invokeContractMethod - result:', result);

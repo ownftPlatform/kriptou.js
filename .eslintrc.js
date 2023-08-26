@@ -172,7 +172,7 @@ module.exports = {
             [
                 '* ***********************', //
                 ' * MIT',
-                { pattern: ' \\* Copyright \\(c\\) \\d{4} OwNFT Market' },
+                { pattern: ' \\* Copyright \\(c\\) \\d{4} ownft Platform' },
                 ' *************************'
             ]
         ],
