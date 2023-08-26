@@ -1,9 +1,18 @@
+# 0.0.87 (2023-08-26)
+
+### Documentation
+
+* docs(changelog): Removed all `merge` related commits from the `CHANGELOG.md` generation. (kr1p70n1c) ([`db6a5db`](https://github.com/ownftPlatform/kriptou.js/commit/db6a5dbf0e3d8c050755169ab8449b7edd117df5))
+
 # 0.0.86 (2023-08-26)
 
 ### Features
 
-* Merge pull request #8 from ownftPlatform/feature/misc (kr1p70n1c) ([`db583d8`](https://github.com/ownftPlatform/kriptou.js/commit/db583d8ccb6a2d29db927a76aa64c2ecb5df1308))
 * feat(misc): Various updates. (kr1p70n1c) ([`f567b29`](https://github.com/ownftPlatform/kriptou.js/commit/f567b29b8eab23b6d1f3d9eda0bbb7c9458b909e))
+
+### Documentation
+
+* docs(changelog): `CHANGELOG` for `0.0.86` release. (kr1p70n1c) ([`5f545e0`](https://github.com/ownftPlatform/kriptou.js/commit/5f545e0b814c761e7ef914c67280d8837f473c01))
 
 ### Chore
 
@@ -23,10 +32,6 @@
 
 * chore(unlock-metamask): Bumped version. (kr1p70n1c) ([`8f697ca`](https://github.com/ownftPlatform/kriptou.js/commit/8f697ca68725729d23bdbbb3e3a927aaf1cbb384))
 
-### Misc (pre semantic commit messages)
-
-* Merge pull request #7 from kr1p70n1c/feature/unlock-metamask (kr1p70n1c) ([`4e8d7fc`](https://github.com/ownftPlatform/kriptou.js/commit/4e8d7fc794d1bbcfd74f3751fcddcb00f8f261fd))
-
 # 0.0.82 (2023-02-17)
 
 ### Features
@@ -45,10 +50,6 @@
 * chore(balance-and-write-transactions): Bumped the `nodejs` version. (kr1p70n1c) ([`8766e2d`](https://github.com/ownftPlatform/kriptou.js/commit/8766e2de9c5e3318672b365ef4f837c39cec7622))
 * chore(balance-and-write-transactions): Removed redundant comment. (kr1p70n1c) ([`fda960d`](https://github.com/ownftPlatform/kriptou.js/commit/fda960db1577c903b272bab3973d9bdd8200fce6))
 
-### Misc (pre semantic commit messages)
-
-* Merge pull request #6 from kr1p70n1c/feature/improvements (kr1p70n1c) ([`c4d62ca`](https://github.com/ownftPlatform/kriptou.js/commit/c4d62cae664ebd5679667cb42561ddbcd755873b))
-
 # 0.0.56 (2022-11-30)
 
 ### Features
@@ -66,16 +67,11 @@
 * chore(latest-updates): Bumped version and updated packages. (kr1p70n1c) ([`22ff32c`](https://github.com/ownftPlatform/kriptou.js/commit/22ff32cf37299645d48f5a14ac0b34500ad7e2b9))
 * chore(version): Bumped the version again in order to deploy on `npmjs`. (kr1p70n1c) ([`9da04fc`](https://github.com/ownftPlatform/kriptou.js/commit/9da04fc6c625e1b03478bc87055e0b31fc36253c))
 
-### Misc (pre semantic commit messages)
-
-* Merge pull request #5 from kr1p70n1c/feature/latest-updates (kr1p70n1c) ([`4810da3`](https://github.com/ownftPlatform/kriptou.js/commit/4810da3a89defb20fde16150aba6f628f0e8babe))
-
 # 0.0.42 (2022-09-05)
 
 ### Features
 
 * feat(chains): Refactored the network/chains types and how they are loaded (included a network file with current EVM chains supported). (kr1p70n1c) ([`f281941`](https://github.com/ownftPlatform/kriptou.js/commit/f281941589df85500286a82c9d40ec7538e0dafd))
-* Merge pull request #4 from kr1p70n1c/feature/chains-refactor (kr1p70n1c) ([`83d56f4`](https://github.com/ownftPlatform/kriptou.js/commit/83d56f45f7a66695bb0af0c5db4891b25f730711))
 
 ### Documentation
 
@@ -99,10 +95,6 @@
 * chore(wyvern-plugin): Removed commented code. (kr1p70n1c) ([`dd7ef69`](https://github.com/ownftPlatform/kriptou.js/commit/dd7ef699b7195aab2d0944f5421a6087a15a0a37))
 * chore(wyvern-plugin): Bumped version. (kr1p70n1c) ([`0d0d5eb`](https://github.com/ownftPlatform/kriptou.js/commit/0d0d5ebb07b5222c6939b46c1a037f4b95d2a871))
 
-### Misc (pre semantic commit messages)
-
-* Merge pull request #3 from kr1p70n1c/feature/wyvern-plugin (kr1p70n1c) ([`6423d7c`](https://github.com/ownftPlatform/kriptou.js/commit/6423d7c3cffdeaf1e11771f6c431c8ddaab33574))
-
 # 0.0.36 (2022-06-14)
 
 ### Fixes
@@ -112,6 +104,10 @@
 ### Documentation
 
 * docs(changelog): `CHANGELOG` for `0.0.36` release. (kr1p70n1c) ([`3e34cfc`](https://github.com/ownftPlatform/kriptou.js/commit/3e34cfc73eade95c14706bbb77d2bd5590e34bb5))
+* doc(wyvern): Added placeholder heading for `Wyvern Protocol`. (kr1p70n1c) ([`cc7e1bd`](https://github.com/ownftPlatform/kriptou.js/commit/cc7e1bdfcc5530422a8e09b601b5d41d6bc89d28))
+* doc(extra-info): Updated `README` to resolve items not specified before. (kr1p70n1c) ([`c095eb9`](https://github.com/ownftPlatform/kriptou.js/commit/c095eb99213aa3d09128ce0f3ba5f2737c7a868b))
+* doc(badge): Updated the badge for the `PR workflow. (kr1p70n1c) ([`551bb28`](https://github.com/ownftPlatform/kriptou.js/commit/551bb2847785abd555e41a91ceb189575b8fadf9))
+* doc(extra-info): Added extra info to display in the `README`. (kr1p70n1c) ([`d5f0e6d`](https://github.com/ownftPlatform/kriptou.js/commit/d5f0e6d639d4634d3991186ad71370a618aba6c4))
 
 ### CI
 
@@ -121,14 +117,6 @@
 ### Chore
 
 * chore(version): Bumped the version. (kr1p70n1c) ([`64851bb`](https://github.com/ownftPlatform/kriptou.js/commit/64851bb198a73134878193b3f4a19469d9008689))
-
-### Misc (pre semantic commit messages)
-
-* Merge pull request #2 from kr1p70n1c/feature/doc-updates (kr1p70n1c) ([`6e51182`](https://github.com/ownftPlatform/kriptou.js/commit/6e51182b5644f884ce12d7faef02e7e6cdca8411))
-* doc(wyvern): Added placeholder heading for `Wyvern Protocol`. (kr1p70n1c) ([`cc7e1bd`](https://github.com/ownftPlatform/kriptou.js/commit/cc7e1bdfcc5530422a8e09b601b5d41d6bc89d28))
-* doc(extra-info): Updated `README` to resolve items not specified before. (kr1p70n1c) ([`c095eb9`](https://github.com/ownftPlatform/kriptou.js/commit/c095eb99213aa3d09128ce0f3ba5f2737c7a868b))
-* doc(badge): Updated the badge for the `PR workflow. (kr1p70n1c) ([`551bb28`](https://github.com/ownftPlatform/kriptou.js/commit/551bb2847785abd555e41a91ceb189575b8fadf9))
-* doc(extra-info): Added extra info to display in the `README`. (kr1p70n1c) ([`d5f0e6d`](https://github.com/ownftPlatform/kriptou.js/commit/d5f0e6d639d4634d3991186ad71370a618aba6c4))
 
 # 0.0.35 (2022-06-14)
 
@@ -148,10 +136,6 @@
 ### Chore
 
 * chore(eth_signTypedData_v3): Bumped versions. (kr1p70n1c) ([`db3dfd4`](https://github.com/ownftPlatform/kriptou.js/commit/db3dfd4bd363b65e50af56637e046173a679bee3))
-
-### Misc (pre semantic commit messages)
-
-* Merge pull request #1 from kr1p70n1c/feature/eth_signTypedData_v3-support (kr1p70n1c) ([`6485248`](https://github.com/ownftPlatform/kriptou.js/commit/64852489317424a9740d67801985d5d44d2ac9c9))
 
 # 0.0.33 (2022-05-24)
 
