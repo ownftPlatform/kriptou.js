@@ -43,9 +43,9 @@ export namespace Kriptou {
     export const init = (_config?: Kriptou.Types.Config): void => {
         logger.debug('init - init');
 
-        if (status === undefined) status = new Status();
         if (network === undefined) network = new Network();
         if (config === undefined) config = new Config(_config);
+        if (status === undefined) status = new Status(config);
         if (web3 === undefined) web3 = new Web3(status, network, config);
         if (account === undefined) account = new Account(status, web3, _config);
         if (plugins === undefined) plugins = new Plugins();
@@ -118,8 +118,13 @@ export namespace Kriptou {
             logger.debug('User :: current - user:', user);
             return user;
         }
-        public static currentPromise(performWalletNotConnectedHandler: boolean = true): Promise<Kriptou.Types.User | undefined> {
+        public static currentPromise(
+            performWalletNotConnectedHandler: boolean = true,
+            performCheckWeb3NotSupportedStatus: boolean = false
+        ): Promise<Kriptou.Types.User | undefined> {
             logger.debug('User :: currentPromise - user:', user);
+
+            if (performCheckWeb3NotSupportedStatus) status.checkWeb3NotSupportedStatus();
 
             if (account) return account.getUser(performWalletNotConnectedHandler);
 

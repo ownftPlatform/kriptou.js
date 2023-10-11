@@ -1,7 +1,19 @@
+# 0.0.97 (2023-10-11)
+
+### Features
+
+* feat(no-evm-wallet): Added the option to receive the `no-wallet-installed-event` when retrieving the user with the `async` function.  This helps with indicating in the frontend that no wallet is installed when wallet-user-related actions are performed. (kr1p70n1c) ([`93f8d90`](https://github.com/ownftPlatform/kriptou.js/commit/93f8d900fa751bc6e5245af15020009f2b965819))
+
+### Chore
+
+* chore(evm-chains): Bumped versions. (kr1p70n1c) ([`e6ed0d2`](https://github.com/ownftPlatform/kriptou.js/commit/e6ed0d2de193c022fd177e08ad9ea55ba6e6ec4e))
+* chore(evm-chains): Updated the list of `EVM` chains. (kr1p70n1c) ([`79623fe`](https://github.com/ownftPlatform/kriptou.js/commit/79623fe9e271bcbd7d1eeb3905d4fc70e640d0fd))
+
 # 0.0.87 (2023-08-26)
 
 ### Documentation
 
+* docs(changelog): `CHANGELOG` for `0.0.87` release. (kr1p70n1c) ([`c4cb502`](https://github.com/ownftPlatform/kriptou.js/commit/c4cb5020493a359fa96712d73fbf013d2dc3da2e))
 * docs(changelog): Removed all `merge` related commits from the `CHANGELOG.md` generation. (kr1p70n1c) ([`db6a5db`](https://github.com/ownftPlatform/kriptou.js/commit/db6a5dbf0e3d8c050755169ab8449b7edd117df5))
 
 # 0.0.86 (2023-08-26)
