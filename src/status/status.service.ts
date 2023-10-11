@@ -7,6 +7,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { Kriptou } from '../index';
 import { logUtil } from '../util/log-util';
 import { KriptouEventInternal } from '../event/event.service';
+import { ConfigService } from '../config/config.service';
 
 export enum StatusValue {
     NotReady,
@@ -30,8 +31,12 @@ export class StatusService {
     // private subscriptions?: Map<string, (...args: any) => any> = new Map();
     // private userLoggedInSubscriptions?: Map<string, (...args: any) => any> = new Map();
 
-    constructor() {
+    constructor(private configService: ConfigService) {
         logger.debug('ctor');
+    }
+
+    public checkWeb3NotSupportedStatus(): void {
+        if (this.statusValue === StatusValue.Web3NotSupported) this.configService.config.browser.web3SupportCheckFailedHandler();
     }
 
     public isReadyAndUserConnected(): boolean {
