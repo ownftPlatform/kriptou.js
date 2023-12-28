@@ -9,12 +9,11 @@ import { KriptouSignTypeInternal, Web3Service } from './web3/web3.service';
 import { PluginsService } from './plugin/plugins.service';
 import { KriptouNftInternal } from './plugin/nft/nft-plugin.service';
 import { ContractService, KriptouContractMethodInvocationOptionsInternal } from './contract/contract.service';
-import { ethers } from 'ethers';
 import { ConfigService, KriptouConfigInternal } from './config/config.service';
 import { LogTypes, logUtil } from './util/log-util';
 import { EventService, KriptouEventInternal, KriptouSubscriptionInternal } from './event/event.service';
-import { JsonRpcProvider } from '@ethersproject/providers';
 import { KriptouNetworkInternal, networks, NetworkService } from './network';
+import { BrowserProvider } from 'ethers';
 
 const logger = logUtil.getLogger('Kriptou');
 
@@ -29,9 +28,6 @@ export namespace Kriptou {
         export type Subscription = KriptouSubscriptionInternal;
         export type SignType = KriptouSignTypeInternal;
     }
-
-    // Exporting 'ethers' project's utils
-    export const utils = ethers.utils;
 
     export const events = KriptouEventInternal;
     export const supportedNetworks = networks;
@@ -102,7 +98,7 @@ export namespace Kriptou {
             return web3.connectWallet();
         }
 
-        public static provider(): JsonRpcProvider {
+        public static provider(): BrowserProvider {
             return globalThis.provider;
         }
     }

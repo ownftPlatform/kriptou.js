@@ -3,13 +3,9 @@
  * Copyright (c) 2022 ownft Platform
  **************************/
 
-import { getAddress } from '@ethersproject/address';
-import { JsonRpcSigner, Web3Provider } from '@ethersproject/providers';
-import { Contract, PopulatedTransaction } from '@ethersproject/contracts';
-import { AddressZero } from '@ethersproject/constants';
 import { Kriptou } from '../index';
-import { BigNumber, BigNumberish } from '@ethersproject/bignumber';
 import { logUtil } from '../util/log-util';
+import { BigNumberish, BrowserProvider, Contract, getAddress, JsonRpcSigner, ZeroAddress } from 'ethers';
 
 type ContractMethodInvocationParams = Record<string, any>;
 
@@ -84,22 +80,22 @@ export class ContractService {
 
             if (options.printEstimatedGas) {
                 logger.info('invokeContractMethod - estimated gas begin');
-                const gas: BigNumber = await contract.estimateGas[options.functionName](
+                const gas: bigint = await contract.estimateGas[options.functionName](
                     ...params,
                     options.msgValue !== undefined ? { value: options.msgValue } : {}
                 );
                 logger.info('invokeContractMethod - estimated gas done:', gas.toString());
             }
 
-            const populatedTransaction: PopulatedTransaction = await contract.populateTransaction[options.functionName](
+            const populatedTransaction = await contract[options.functionName].populateTransaction(
                 ...params,
                 options.msgValue !== undefined ? { value: options.msgValue } : {}
             );
             logger.info('populatedTransaction:', populatedTransaction);
 
             result = options.sendCall
-                ? ContractService.getSigner(globalThis.provider, user.address).call(populatedTransaction)
-                : ContractService.getSigner(globalThis.provider, user.address).sendTransaction(populatedTransaction);
+                ? (await ContractService.getSigner(globalThis.provider, user.address)).call(populatedTransaction)
+                : (await ContractService.getSigner(globalThis.provider, user.address)).sendTransaction(populatedTransaction);
         }
 
         logger.info('invokeContractMethod - result:', result);
@@ -118,21 +114,21 @@ export class ContractService {
     }
 
     // account is not optional
-    private static getSigner(library: Web3Provider, account: string): JsonRpcSigner {
-        return library.getSigner(account).connectUnchecked();
+    private static getSigner(library: BrowserProvider, account: string): Promise<JsonRpcSigner> {
+        return library.getSigner(account);
     }
 
     // account is optional
-    private static getProviderOrSigner(library: Web3Provider, account?: string): Web3Provider | JsonRpcSigner {
-        return account ? ContractService.getSigner(library, account) : library;
+    private static getProviderOrSigner(library: BrowserProvider, account?: string): Promise<BrowserProvider | JsonRpcSigner> {
+        return account ? ContractService.getSigner(library, account) : Promise.resolve(library);
     }
 
     // account is optional
-    public static getContract(address: string, abi: any, library: Web3Provider, account?: string): Contract {
-        if (!ContractService.isAddress(address) || address === AddressZero) {
+    public static async getContract(address: string, abi: any, library: BrowserProvider, account?: string): Promise<Contract> {
+        if (!ContractService.isAddress(address) || address === ZeroAddress) {
             throw Error(`Invalid 'address' parameter '${address}'.`);
         }
 
-        return new Contract(address, abi, ContractService.getProviderOrSigner(library, account) as any);
+        return new Contract(address, abi, await ContractService.getProviderOrSigner(library, account));
     }
 }
