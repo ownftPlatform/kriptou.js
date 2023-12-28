@@ -1,8 +1,20 @@
+# 0.0.105 (2023-12-28)
+
+### Chore
+
+* chore(package-upgrades): Bumped version and upgraded packages. (kr1p70n1c) ([`17d64b7`](https://github.com/ownftPlatform/kriptou.js/commit/17d64b798b3e95a328d52be8ce866518e639cef2))
+* chore(package-upgrades): Changes to work with the new versions of `ethers` and `web3` libraries. (kr1p70n1c) ([`6f9094e`](https://github.com/ownftPlatform/kriptou.js/commit/6f9094ec839b46292de58c67d77a0c9c4dd1f4d2))
+* chore(evm-chains): Updated EVM chains. (kr1p70n1c) ([`8b0ef2a`](https://github.com/ownftPlatform/kriptou.js/commit/8b0ef2a4b7ad9919685f0e477f7eac97075b2ab0))
+
 # 0.0.97 (2023-10-11)
 
 ### Features
 
 * feat(no-evm-wallet): Added the option to receive the `no-wallet-installed-event` when retrieving the user with the `async` function.  This helps with indicating in the frontend that no wallet is installed when wallet-user-related actions are performed. (kr1p70n1c) ([`93f8d90`](https://github.com/ownftPlatform/kriptou.js/commit/93f8d900fa751bc6e5245af15020009f2b965819))
+
+### Documentation
+
+* docs(changelog): `CHANGELOG` for `0.0.97` release. (kr1p70n1c) ([`07d852a`](https://github.com/ownftPlatform/kriptou.js/commit/07d852a4d708d56e6c788b8fe47b8c176ad60414))
 
 ### Chore
 
