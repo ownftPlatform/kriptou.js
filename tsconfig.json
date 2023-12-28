@@ -5,7 +5,8 @@
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
-    "pretty": true
+    "pretty": true,
+    "esModuleInterop": true
   },
   "include": [
     "src/**/*.ts"
