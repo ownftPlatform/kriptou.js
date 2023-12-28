@@ -4,7 +4,7 @@
  **************************/
 
 import { ReplaySubject } from 'rxjs';
-import { ethers } from 'ethers';
+import { BrowserProvider } from 'ethers';
 import { ContractService } from '../contract/contract.service';
 import { NetworkService } from '../network';
 import { logUtil } from '../util/log-util';
@@ -12,10 +12,7 @@ import { ConfigService } from '../config/config.service';
 import { Kriptou } from '../index';
 import { isBrowser } from '../util/common';
 import { StatusValue } from '../status/status.service';
-
-const web3 = require('web3');
-
-declare let require: any;
+import { FMT_BYTES, FMT_NUMBER, Web3 } from 'web3';
 
 export enum KriptouSignTypeInternal {
     EthSign,
@@ -54,16 +51,18 @@ export class Web3Service {
             this.web3 =
                 typeof globalThis.web3 !== 'undefined'
                     ? globalThis.ethereum
-                    : new web3.providers.HttpProvider('http://localhost:8545');
-            globalThis.web3 = new web3(globalThis.ethereum);
-            globalThis.provider = new ethers.providers.Web3Provider(globalThis.ethereum);
+                    : new Web3.providers.HttpProvider('http://localhost:8545');
+            globalThis.web3 = new Web3(globalThis.ethereum);
+            logger.debug('globalThis.ethereum:', globalThis.ethereum);
+            globalThis.provider = new BrowserProvider(globalThis.ethereum);
             logger.debug('this.web3:', this.web3);
             logger.debug('globalThis.web3:', globalThis.web3);
 
             ContractService.BLOCKCHAIN = globalThis.web3.eth;
             this.rxWeb3.next([this.web3, globalThis.web3, globalThis.web3.eth]);
 
-            globalThis.web3.eth.getChainId().then((chainId: number) => {
+            // eslint-disable-next-line id-blacklist
+            globalThis.web3.eth.getChainId({ number: FMT_NUMBER.NUMBER, bytes: FMT_BYTES.HEX }).then((chainId: number) => {
                 logger.info('initWeb3 - chainId:', chainId);
                 globalThis.chainId = chainId;
                 this.networkService.setChainIdDecimal(chainId);
