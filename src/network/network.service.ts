@@ -58,8 +58,8 @@ export class NetworkService {
             return Promise.resolve();
         } catch (switchError) {
             // This error code indicates that the chain has not been added to MetaMask.
-            if (switchError.code === 4902 || switchError.code === -32603) {
-                logger.warn('This network is not available in your metamask, please add it', switchError);
+            if (switchError.error.code === 4902 || switchError.error.code === -32603) {
+                logger.warn('This network is not available in your metamask, please add it', switchError.error);
                 return this.addNetwork(network);
             }
             logger.error('Failed to switch to the network:', switchError);
@@ -85,11 +85,11 @@ export class NetworkService {
                     }
                 }
             ]);
-            logger.debug('You have succefully added the network');
+            logger.debug('You have successfully added the network');
             return Promise.resolve();
-        } catch (switchError) {
-            logger.error('Failed to add the network:', switchError);
-            return Promise.reject(switchError);
+        } catch (addError) {
+            logger.error('Failed to add the network:', addError);
+            return Promise.reject(addError);
         }
     }
 }

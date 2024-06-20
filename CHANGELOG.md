@@ -1,4 +1,14 @@
+# 0.0.106 (2024-06-20)
+
+### Fixes
+
+* fix(network-errors): Using new versions of libraries means we have to handle error objects differently now. (kr1p70n1c) ([`d7eebb2`](https://github.com/ownftPlatform/kriptou.js/commit/d7eebb24ae6dbc74fafddc30ab9b6745a6261a14))
+
 # 0.0.105 (2023-12-28)
+
+### Documentation
+
+* docs(changelog): `CHANGELOG` for `0.0.105` release. (kr1p70n1c) ([`78546ef`](https://github.com/ownftPlatform/kriptou.js/commit/78546efec12d2b4d76a0c6f974243f84b4a9183b))
 
 ### Chore
 
