@@ -50,6 +50,26 @@ export namespace Kriptou {
         logger.debug('init - done');
     };
 
+    /**
+     * Re-initialises the environment.
+     */
+    export const reInit = (_config?: Kriptou.Types.Config): void => {
+        logger.debug('reInit - init');
+
+        let _configToUse: Kriptou.Types.Config = config.config;
+        if (_config !== undefined) _configToUse = _config;
+
+        network = new Network();
+        config = new Config(_configToUse);
+        status = new Status(config);
+        web3 = new Web3(status, network, config);
+        account = new Account(status, web3, _configToUse);
+        plugins = new Plugins();
+        _events = new Events(status, network);
+
+        logger.debug('reInit - done');
+    };
+
     export const invokeContractMethod = (options: Kriptou.Types.ContractMethodInvocationOptions): Promise<any> => {
         return Contract.invokeContractMethod(options, User.current());
     };
